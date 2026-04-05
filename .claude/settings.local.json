@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(/.claude/skills/gerar-conteudo-aulas/**)",
+      "Edit(/.claude/skills/escrever-copy-vendas/**)",
+      "Edit(/.claude/skills/montar-pagina-vendas/**)",
+      "Edit(/.claude/skills/gerar-emails-lancamento/**)",
+      "Edit(/.claude/skills/configurar-kiwify/**)",
+      "Edit(/.claude/skills/gerar-criativos-ads/**)",
+      "Edit(/.claude/skills/gerar-conteudo-completo/**)",
+      "Edit(/.claude/skills/gerar-ebook-bonus/**)",
+      "Edit(/.claude/skills/gerar-app-web/**)",
+      "WebSearch",
+      "WebFetch(domain:help.apiyi.com)",
+      "WebFetch(domain:www.principia.net)",
+      "WebFetch(domain:about.fb.com)",
+      "WebFetch(domain:blog.eadplataforma.com)",
+      "WebFetch(domain:stormy.ai)",
+      "WebFetch(domain:infoprodutos.ai)"
+    ]
+  }
+}

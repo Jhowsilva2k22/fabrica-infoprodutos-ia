@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="O único curso em português que transforma o Claude Code em uma fábrica de infoprodutos automática. Do conteúdo ao checkout em 7 dias.">
+  <title>Fábrica de Infoprodutos com IA — Crie, Lance e Venda 100% com Claude</title>
+  <style>
+    /* ============================================
+       VARIÁVEIS E RESET
+       ============================================ */
+    :root {
+      --bg:        #07090f;
+      --bg2:       #0d1220;
+      --bg3:       #111827;
+      --green:     #00e87a;
+      --green-dim: #00b85f;
+      --green-glow:rgba(0,232,122,0.18);
+      --gold:      #f5c518;
+      --gold-dim:  #c9a010;
+      --gold-glow: rgba(245,197,24,0.15);
+      --red:       #ff4444;
+      --red-glow:  rgba(255,68,68,0.18);
+      --text:      #f1f5f9;
+      --muted:     #8896aa;
+      --border:    rgba(255,255,255,0.07);
+      --radius:    14px;
+      --radius-lg: 22px;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; font-size:16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+    img { max-width:100%; display:block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ============================================
+       ANIMAÇÕES DE SCROLL
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal-left.visible { opacity:1; transform:translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal-right.visible { opacity:1; transform:translateX(0); }
+
+    /* ============================================
+       STICKY BAR
+       ============================================ */
+    #sticky-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: linear-gradient(90deg, #040810 0%, #0b1428 50%, #040810 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    #sticky-bar .bar-text {
+      font-size: .82rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    #sticky-bar .bar-text strong { color: var(--text); }
+    #sticky-timer {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .timer-unit {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: .88rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--red);
+      min-width: 34px;
+      text-align: center;
+    }
+    .timer-sep { color: var(--red); font-weight: 700; font-size:.85rem; }
+    .btn-sticky {
+      background: var(--green);
+      color: #000;
+      font-weight: 800;
+      font-size: .8rem;
+      padding: 8px 18px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      letter-spacing: .3px;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-sticky:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 18px var(--green-glow);
+    }
+
+    /* ============================================
+       LAYOUT UTILITÁRIOS
+       ============================================ */
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .section { padding: 80px 0; }
+    .section-sm { padding: 60px 0; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--green-glow);
+      border: 1px solid rgba(0,232,122,.3);
+      color: var(--green);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      margin-bottom: 20px;
+    }
+    .tag-gold {
+      background: var(--gold-glow);
+      border-color: rgba(245,197,24,.3);
+      color: var(--gold);
+    }
+    .tag-red {
+      background: var(--red-glow);
+      border-color: rgba(255,68,68,.3);
+      color: var(--red);
+    }
+    h2.section-title {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .text-green { color: var(--green); }
+    .text-gold  { color: var(--gold); }
+    .text-red   { color: var(--red); }
+    .text-muted { color: var(--muted); }
+    .text-center { text-align: center; }
+    .divider {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--green), transparent);
+      border-radius: 2px;
+      margin: 14px 0 32px;
+    }
+    .divider-center { margin: 14px auto 32px; }
+
+    /* ============================================
+       BOTÕES CTA
+       ============================================ */
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-dim) 100%);
+      color: #000;
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 18px 40px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      letter-spacing: .3px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+      animation: pulse-green 2.5s ease-in-out infinite;
+      text-decoration: none;
+    }
+    .btn-cta:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 40px var(--green-glow), 0 0 0 3px rgba(0,232,122,.25);
+      animation: none;
+    }
+    .btn-cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,.12) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform .5s;
+    }
+    .btn-cta:hover::after { transform: translateX(100%); }
+
+    .btn-cta-lg {
+      font-size: 1.2rem;
+      padding: 22px 52px;
+    }
+    .btn-cta-gold {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+      animation: pulse-gold 2.5s ease-in-out infinite;
+    }
+    .btn-cta-gold:hover {
+      box-shadow: 0 10px 40px var(--gold-glow), 0 0 0 3px rgba(245,197,24,.25);
+    }
+
+    @keyframes pulse-green {
+      0%,100% { box-shadow: 0 0 0 0 var(--green-glow); }
+      50%      { box-shadow: 0 0 0 12px transparent, 0 6px 30px var(--green-glow); }
+    }
+    @keyframes pulse-gold {
+      0%,100% { box-shadow: 0 0 0 0 var(--gold-glow); }
+      50%      { box-shadow: 0 0 0 12px transparent, 0 6px 30px var(--gold-glow); }
+    }
+
+    .cta-sub {
+      font-size: .8rem;
+      color: var(--muted);
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .cta-sub span::before { content:'✓ '; color: var(--green); }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    #hero {
+      padding: 110px 0 70px;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,232,122,.06) 0%, transparent 70%),
+        var(--bg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(0,232,122,.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+      opacity: .9;
+    }
+    #hero h1 {
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, #fff 30%, #b0bfcc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--green), #00c56a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+    .hero-sub strong { color: var(--text); }
+    .hero-cta-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .video-placeholder {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 720px;
+      margin: 0 auto;
+      aspect-ratio: 16/9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--muted);
+      position: relative;
+      overflow: hidden;
+    }
+    .video-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,232,122,.03), rgba(245,197,24,.02));
+    }
+    .play-btn {
+      width: 72px; height: 72px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 30px var(--green-glow);
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+    }
+    .play-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 50px var(--green-glow);
+    }
+    .play-btn svg { margin-left: 4px; }
+    .video-label { font-size: .85rem; position: relative; z-index:1; }
+
+    /* Social proof strip */
+    .social-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding: 20px 0 0;
+    }
+    .social-strip-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .83rem;
+      color: var(--muted);
+    }
+    .social-strip-item .icon { font-size: 1.1rem; }
+
+    /* ============================================
+       MICRO-COMMITMENT
+       ============================================ */
+    #micro {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 0;
+    }
+    .micro-title {
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .micro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .micro-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: border-color .3s;
+    }
+    .micro-card:hover { border-color: rgba(0,232,122,.3); }
+    .micro-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+    .micro-card p { font-size: .9rem; color: var(--muted); line-height: 1.6; }
+    .micro-card p strong { color: var(--text); }
+
+    /* ============================================
+       DOR
+       ============================================ */
+    #dor { background: var(--bg); }
+    .dor-intro {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 720px;
+    }
+    .dor-intro strong { color: var(--text); }
+    .cost-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 28px 0;
+    }
+    .cost-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+    }
+    .cost-item .cost-icon { font-size: 1.3rem; flex-shrink:0; }
+    .cost-item .cost-label { flex:1; font-size: .92rem; color: var(--muted); }
+    .cost-item .cost-label strong { color: var(--text); }
+    .cost-price {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--red);
+      white-space: nowrap;
+    }
+    .dor-callout {
+      background: linear-gradient(135deg, rgba(255,68,68,.08), rgba(255,68,68,.03));
+      border: 1px solid rgba(255,68,68,.2);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-top: 32px;
+    }
+    .dor-callout p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .dor-callout strong { color: var(--text); }
+
+    /* ============================================
+       AGITAÇÃO / CUSTO DO ATRASO
+       ============================================ */
+    #agitacao {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .loss-calculator {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 32px 0;
+    }
+    .loss-card {
+      background: var(--bg3);
+      border: 1px solid rgba(255,68,68,.2);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .loss-period {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .loss-amount {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 900;
+      color: var(--red);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .loss-label {
+      font-size: .78rem;
+      color: var(--muted);
+    }
+    .market-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 32px 0;
+    }
+    .stat-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .stat-desc { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+
+    /* ============================================
+       SOLUÇÃO
+       ============================================ */
+    #solucao {
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+    #solucao::before {
+      content: '';
+      position: absolute;
+      top: 0; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,232,122,.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .solucao-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 28px 0;
+    }
+    .solucao-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      transition: border-color .3s, transform .2s;
+    }
+    .solucao-item:hover {
+      border-color: rgba(0,232,122,.3);
+      transform: translateX(4px);
+    }
+    .solucao-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .solucao-item p { font-size: .92rem; color: var(--muted); }
+    .solucao-item p strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+    /* ============================================
+       BENEFÍCIOS
+       ============================================ */
+    #beneficios { background: var(--bg2); }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .benefit-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, transform .25s;
+    }
+    .benefit-card:hover {
+      border-color: rgba(0,232,122,.35);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    }
+    .benefit-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), transparent);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .benefit-card:hover::before { opacity: 1; }
+    .benefit-check {
+      width: 32px; height: 32px;
+      background: var(--green-glow);
+      border: 1px solid rgba(0,232,122,.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      color: var(--green);
+      margin-bottom: 14px;
+      font-weight: 700;
+    }
+    .benefit-card h4 {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .benefit-card p {
+      font-size: .83rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       O QUE VOCÊ RECEBE
+       ============================================ */
+    #conteudo { background: var(--bg); }
+    .modules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 28px 0;
+    }
+    .module-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      transition: border-color .3s;
+    }
+    .module-row:hover { border-color: rgba(0,232,122,.2); }
+    .module-num {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--green-glow);
+      border: 1px solid rgba(0,232,122,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .78rem;
+      font-weight: 800;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+    .module-name { flex: 1; font-size: .9rem; color: var(--text); font-weight: 600; }
+    .module-value {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .total-row {
+      background: linear-gradient(135deg, rgba(0,232,122,.08), rgba(0,232,122,.03));
+      border-color: rgba(0,232,122,.25) !important;
+    }
+    .total-row .module-name { font-weight: 800; font-size:.95rem; }
+    .total-row .module-value { color: var(--green); font-size:.95rem; }
+
+    .bonus-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+    .bonus-card {
+      background: var(--bg2);
+      border: 1px solid rgba(245,197,24,.2);
+      border-radius: var(--radius);
+      padding: 24px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bonus-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
+    .bonus-badge {
+      display: inline-flex;
+      background: var(--gold-glow);
+      border: 1px solid rgba(245,197,24,.3);
+      color: var(--gold);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .bonus-card h4 { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+    .bonus-card p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+    .bonus-card .bonus-value {
+      margin-top: 14px;
+      font-size: .85rem;
+      color: var(--muted);
+    }
+    .bonus-card .bonus-value span {
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .bonus-list {
+      margin: 8px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .bonus-list li {
+      font-size: .83rem;
+      color: var(--muted);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .bonus-list li::before { content: '→'; color: var(--gold); flex-shrink:0; }
+
+    /* ============================================
+       PARA QUEM É / NÃO É
+       ============================================ */
+    #publico {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+    .publico-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 36px;
+    }
+    .publico-col {
+      background: var(--bg3);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+    }
+    .publico-col.yes { border: 1px solid rgba(0,232,122,.25); }
+    .publico-col.no  { border: 1px solid rgba(255,68,68,.2); }
+    .publico-col h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .publico-col.yes h3 { color: var(--green); }
+    .publico-col.no  h3 { color: var(--red); }
+    .publico-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: .87rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+    .publico-item:last-child { margin-bottom: 0; }
+    .publico-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+
+    /* ============================================
+       DEPOIMENTOS
+       ============================================ */
+    #depoimentos { background: var(--bg); }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .testimonial-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      position: relative;
+      transition: border-color .3s, transform .25s;
+    }
+    .testimonial-card:hover {
+      border-color: rgba(0,232,122,.3);
+      transform: translateY(-4px);
+    }
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 1rem;
+      margin-bottom: 14px;
+      letter-spacing: 2px;
+    }
+    .testimonial-text {
+      font-size: .9rem;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 18px;
+      font-style: italic;
+    }
+    .testimonial-text::before { content: '"'; color: var(--green); font-size:1.4rem; font-style:normal; }
+    .testimonial-text::after  { content: '"'; color: var(--green); font-size:1.4rem; font-style:normal; }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--bg3);
+      border: 2px solid var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: .9rem;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+    .testimonial-name { font-weight: 700; font-size: .88rem; }
+    .testimonial-role { font-size: .78rem; color: var(--muted); }
+    .testimonial-result {
+      display: inline-flex;
+      margin-top: 14px;
+      background: var(--green-glow);
+      border: 1px solid rgba(0,232,122,.2);
+      color: var(--green);
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 50px;
+    }
+
+    /* ============================================
+       PREÇO E ANCORAGEM
+       ============================================ */
+    #preco {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+    .price-comparison {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 32px 0;
+    }
+    .price-comp-item {
+      background: var(--bg3);
+      border: 1px solid rgba(255,68,68,.15);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .price-comp-item .svc { font-size: .82rem; color: var(--muted); }
+    .price-comp-item .val { font-size: .82rem; font-weight: 700; color: var(--red); white-space: nowrap; }
+    .price-total-row {
+      background: rgba(255,68,68,.06);
+      border-color: rgba(255,68,68,.3) !important;
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .price-total-row .svc { font-size: .9rem; font-weight: 700; color: var(--text); }
+    .price-total-row .val { font-size: 1rem; font-weight: 900; color: var(--red); }
+
+    .price-box {
+      background: linear-gradient(135deg, rgba(0,232,122,.06) 0%, rgba(0,232,122,.02) 100%);
+      border: 1px solid rgba(0,232,122,.3);
+      border-radius: var(--radius-lg);
+      padding: 42px 36px;
+      text-align: center;
+      margin-top: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .price-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+    }
+    .price-offer-tag {
+      display: inline-flex;
+      background: var(--red-glow);
+      border: 1px solid rgba(255,68,68,.3);
+      color: var(--red);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 50px;
+      margin-bottom: 22px;
+    }
+    .price-original {
+      font-size: 1.2rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+    .price-prev {
+      font-size: 1rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-bottom: 12px;
+    }
+    .price-current {
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .price-current sup { font-size: 40%; vertical-align: super; }
+    .price-installment {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+    .price-installment strong { color: var(--text); }
+    .price-includes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 24px 0 32px;
+      text-align: left;
+    }
+    .price-include-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .88rem;
+      color: var(--muted);
+    }
+    .price-include-item .pi-icon { color: var(--green); flex-shrink:0; }
+    .price-timer-wrap {
+      margin-bottom: 28px;
+    }
+    .price-timer-label {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .price-timer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .pt-unit {
+      background: var(--bg3);
+      border: 1px solid rgba(255,68,68,.3);
+      border-radius: 10px;
+      padding: 8px 14px;
+      text-align: center;
+      min-width: 58px;
+    }
+    .pt-number {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--red);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .pt-label { font-size: .65rem; color: var(--muted); letter-spacing: .5px; margin-top: 2px; }
+    .pt-sep { font-size: 1.5rem; font-weight: 900; color: var(--red); }
+
+    /* ============================================
+       GARANTIA
+       ============================================ */
+    #garantia {
+      background: var(--bg);
+      text-align: center;
+    }
+    .guarantee-box {
+      background: var(--bg2);
+      border: 1px solid rgba(0,232,122,.2);
+      border-radius: var(--radius-lg);
+      padding: 48px 36px;
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .guarantee-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,232,122,.04), transparent);
+    }
+    .guarantee-seal {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      border: 3px solid var(--green);
+      background: var(--green-glow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      position: relative;
+      z-index:1;
+      box-shadow: 0 0 40px var(--green-glow);
+    }
+    .guarantee-seal .seal-days {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+    }
+    .guarantee-seal .seal-text {
+      font-size: .55rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+    .guarantee-box h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      position: relative;
+      z-index:1;
+    }
+    .guarantee-box p {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 520px;
+      margin: 0 auto;
+      position: relative;
+      z-index:1;
+    }
+    .guarantee-box strong { color: var(--text); }
+    .guarantee-note {
+      margin-top: 20px;
+      font-size: .82rem !important;
+      font-style: italic;
+      position: relative;
+      z-index:1;
+    }
+
+    /* ============================================
+       CTA FINAL
+       ============================================ */
+    #cta-final {
+      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+      text-align: center;
+      padding: 80px 0;
+    }
+    .cta-final-title {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+    .cta-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 680px;
+      margin: 36px auto;
+    }
+    .cta-option {
+      background: var(--bg3);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: left;
+    }
+    .cta-option.bad  { border: 1px solid rgba(255,68,68,.2); }
+    .cta-option.good { border: 1px solid rgba(0,232,122,.3); }
+    .cta-option h4 {
+      font-size: .85rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cta-option.bad h4  { color: var(--red); }
+    .cta-option.good h4 { color: var(--green); }
+    .cta-option ul li {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .cta-option.bad  ul li::before { content:'✗'; color:var(--red);   position:absolute; left:0; }
+    .cta-option.good ul li::before { content:'✓'; color:var(--green); position:absolute; left:0; }
+
+    /* ============================================
+       FAQ
+       ============================================ */
+    #faq { background: var(--bg2); }
+    .faq-list { margin-top: 36px; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 20px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      color: var(--text);
+      font-size: .95rem;
+      font-weight: 600;
+      font-family: inherit;
+      transition: color .2s;
+    }
+    .faq-question:hover { color: var(--green); }
+    .faq-icon {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      color: var(--green);
+      flex-shrink: 0;
+      transition: transform .3s, background .2s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: var(--green-glow);
+      border-color: rgba(0,232,122,.3);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease, padding .3s;
+    }
+    .faq-item.open .faq-answer { max-height: 400px; }
+    .faq-answer-inner {
+      padding: 0 0 20px;
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+    .faq-answer-inner strong { color: var(--text); }
+
+    /* ============================================
+       PS / URGÊNCIA FINAL
+       ============================================ */
+    #ps-section {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 70px 0;
+    }
+    .ps-box {
+      background: linear-gradient(135deg, rgba(245,197,24,.06) 0%, rgba(245,197,24,.02) 100%);
+      border: 1px solid rgba(245,197,24,.25);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .ps-box h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .ps-box p {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .ps-box p strong { color: var(--text); }
+    .ps-box p:last-of-type { margin-bottom: 0; }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      background: #040608;
+      border-top: 1px solid var(--border);
+      padding: 32px 20px;
+      text-align: center;
+    }
+    footer p { font-size: .78rem; color: var(--muted); line-height: 1.8; }
+    footer a { color: var(--muted); text-decoration: underline; }
+    footer a:hover { color: var(--text); }
+
+    /* ============================================
+       RESPONSIVO
+       ============================================ */
+    @media (max-width: 640px) {
+      .section { padding: 60px 0; }
+      .publico-grid { grid-template-columns: 1fr; }
+      .cta-compare { grid-template-columns: 1fr; }
+      .price-box { padding: 32px 20px; }
+      .guarantee-box { padding: 36px 20px; }
+      .ps-box { padding: 28px 20px; }
+      #sticky-bar .bar-text { font-size: .74rem; }
+      #hero { padding: 90px 0 60px; }
+    }
+
+    /* ============================================
+       GRID UTILITÁRIOS
+       ============================================ */
+    .flex-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================
+     STICKY BAR
+     ============================================ -->
+<div id="sticky-bar">
+  <div class="bar-text">
+    <span>⚡ Oferta de lançamento encerra em:</span>
+    <div id="sticky-timer">
+      <span class="timer-unit" id="s-h">00</span>
+      <span class="timer-sep">:</span>
+      <span class="timer-unit" id="s-m">00</span>
+      <span class="timer-sep">:</span>
+      <span class="timer-unit" id="s-s">00</span>
+    </div>
+    <strong>| R$47</strong>
+  </div>
+  <a href="#preco" class="btn-sticky">Garantir Minha Vaga →</a>
+</div>
+
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<section id="hero">
+  <div class="container">
+    <div class="reveal">
+      <p class="hero-eyebrow">🏭 Fábrica de Infoprodutos com IA</p>
+      <h1>
+        Enquanto Você Lê Isso,<br>
+        Alguém No Seu Nicho Está Usando<br>
+        Claude Para Lançar <em>o Produto<br>que Deveria Ser Seu</em>
+      </h1>
+      <p class="hero-sub">
+        O único curso em português que transforma o Claude Code em uma
+        <strong>fábrica de infoprodutos automática</strong> — do conteúdo ao checkout,
+        do anúncio à primeira venda — sem equipe, sem experiência técnica, sem enrolação.
+      </p>
+      <div class="hero-cta-wrap">
+        <a href="#preco" class="btn-cta btn-cta-lg">
+          🚀 Quero Entrar Para a Fábrica Agora
+        </a>
+        <div class="cta-sub">
+          <span>Acesso imediato</span>
+          <span>Garantia de 7 dias</span>
+          <span>Pix, cartão ou boleto</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="video-placeholder">
+        <div class="play-btn">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#000">
+            <polygon points="5,3 19,12 5,21"/>
+          </svg>
+        </div>
+        <p class="video-label">Assista: Como a Fábrica Funciona em 3 Minutos</p>
+      </div>
+    </div>
+
+    <div class="social-strip reveal">
+      <div class="social-strip-item"><span class="icon">⭐</span> Mais de 37 aulas práticas</div>
+      <div class="social-strip-item"><span class="icon">🏭</span> 9 Skills prontas para usar</div>
+      <div class="social-strip-item"><span class="icon">🚀</span> Do zero ao lançamento em 7 dias</div>
+      <div class="social-strip-item"><span class="icon">🔒</span> Garantia incondicional de 7 dias</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     MICRO-COMMITMENT
+     ============================================ -->
+<section id="micro">
+  <div class="container">
+    <div class="reveal">
+      <h2 class="micro-title">Você já se viu em alguma dessas situações?</h2>
+    </div>
+    <div class="micro-grid">
+      <div class="micro-card reveal">
+        <div class="micro-icon">😤</div>
+        <p><strong>Tem conhecimento valioso</strong> mas não sabe como transformar em produto digital sem contratar equipe cara.</p>
+      </div>
+      <div class="micro-card reveal">
+        <div class="micro-icon">📺</div>
+        <p><strong>Já comprou cursos de IA</strong> que ensinaram a usar chatbots, mas não como construir um negócio de verdade.</p>
+      </div>
+      <div class="micro-card reveal">
+        <div class="micro-icon">⏳</div>
+        <p><strong>Está "planejando lançar"</strong> há meses enquanto vê outros no mesmo nicho faturando com produtos similares.</p>
+      </div>
+      <div class="micro-card reveal">
+        <div class="micro-icon">💸</div>
+        <p><strong>Sabe que está deixando dinheiro na mesa</strong> mas o processo parece complexo, técnico e caro demais.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     DOR
+     ============================================ -->
+<section id="dor" class="section">
+  <div class="container">
+    <div class="reveal">
+      <span class="tag tag-red">⚠️ O Problema Real</span>
+      <h2 class="section-title">Criar um infoproduto do zero<br>é um projeto de <span class="text-red">4 a 6 meses</span></h2>
+      <div class="divider"></div>
+      <p class="dor-intro">
+        Você sabe que tem conhecimento suficiente para criar um produto digital.
+        Você lê sobre pessoas faturando R$30k, R$50k, R$100k por mês.
+        <strong>E mesmo assim... você não lançou nada.</strong>
+      </p>
+      <p class="dor-intro">Sabe por quê? Porque construir um infoproduto completo exige:</p>
+    </div>
+
+    <div class="cost-list reveal">
+      <div class="cost-item">
+        <span class="cost-icon">✍️</span>
+        <div class="cost-label"><strong>Copywriter</strong> para escrever a página de vendas</div>
+        <span class="cost-price">R$3k – R$8k</span>
+      </div>
+      <div class="cost-item">
+        <span class="cost-icon">🎨</span>
+        <div class="cost-label"><strong>Designer</strong> para criar a landing page</div>
+        <span class="cost-price">R$2k – R$5k</span>
+      </div>
+      <div class="cost-item">
+        <span class="cost-icon">💻</span>
+        <div class="cost-label"><strong>Desenvolvedor</strong> para construir a área de membros</div>
+        <span class="cost-price">R$8k – R$15k</span>
+      </div>
+      <div class="cost-item">
+        <span class="cost-icon">📢</span>
+        <div class="cost-label"><strong>Especialista em tráfego</strong> para rodar os anúncios</div>
+        <span class="cost-price">R$2k/mês + %</span>
+      </div>
+      <div class="cost-item">
+        <span class="cost-icon">📚</span>
+        <div class="cost-label"><strong>Semanas escrevendo</strong> o conteúdo — sozinho, sem saber se vai vender</div>
+        <span class="cost-price">Meses perdidos</span>
+      </div>
+    </div>
+
+    <div class="dor-callout reveal">
+      <p>
+        Isso sem contar os cursos que você já comprou para "aprender a fazer sozinho"
+        — e que ficaram pela metade porque eram teóricos demais, técnicos demais,
+        ou simplesmente não funcionaram no mundo real.
+        <br><br>
+        <strong>O resultado? Você está parado.</strong> Com a ideia na cabeça.
+        Com o conhecimento que poderia ajudar outras pessoas.
+        Com o dinheiro que poderia estar entrando todo mês.
+        Enquanto isso, o relógio está rodando.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     AGITAÇÃO — CUSTO DO ATRASO
+     ============================================ -->
+<section id="agitacao" class="section">
+  <div class="container">
+    <div class="reveal">
+      <span class="tag tag-red">📉 O Custo Real do Atraso</span>
+      <h2 class="section-title">Cada mês sem produto lançado<br>tem um <span class="text-red">preço exato</span></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted); margin-bottom:8px;">
+        Se seu produto vende apenas 20 unidades/mês a R$197 — número conservador:
+      </p>
+    </div>
+
+    <div class="loss-calculator reveal">
+      <div class="loss-card">
+        <div class="loss-period">1 mês de atraso</div>
+        <div class="loss-amount">R$3.940</div>
+        <div class="loss-label">que não entraram na sua conta</div>
+      </div>
+      <div class="loss-card">
+        <div class="loss-period">3 meses de atraso</div>
+        <div class="loss-amount">R$11.820</div>
+        <div class="loss-label">que não entraram na sua conta</div>
+      </div>
+      <div class="loss-card">
+        <div class="loss-period">6 meses de atraso</div>
+        <div class="loss-amount">R$23.640</div>
+        <div class="loss-label">que não entraram na sua conta</div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <p style="color:var(--muted); margin-bottom:28px; font-size:.95rem;">
+        E esses números <strong style="color:var(--text)">crescem</strong> quando você tiver prova social e pixel otimizado.
+        Enquanto isso, o mercado está mudando agora:
+      </p>
+    </div>
+
+    <div class="market-stats reveal">
+      <div class="stat-card">
+        <div class="stat-number">42%</div>
+        <div class="stat-desc">dos criadores já têm infoprodutos como principal fonte de renda em 2026</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">+30%</div>
+        <div class="stat-desc">de crescimento no setor de infoprodutos no último ano</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">+40-60%</div>
+        <div class="stat-desc">maior CPA dos anúncios em 6 meses — mais concorrentes, mais caro</div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:32px; padding:24px; background:var(--bg3); border-radius:var(--radius); border: 1px solid rgba(255,68,68,.2);">
+      <p style="font-size:1rem; font-weight:700; color:var(--text); margin-bottom:8px;">
+        Daqui a 12 meses, os primeiros a lançar já vão ter:
+      </p>
+      <p style="font-size:.9rem; color:var(--muted);">
+        Lookalike Audiences treinadas · centenas de depoimentos reais · produtos validados com histórico de pixel.
+        <strong style="color:var(--red)">Você vai estar competindo com quem tem 12 meses de vantagem.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     SOLUÇÃO
+     ============================================ -->
+<section id="solucao" class="section">
+  <div class="container">
+    <div class="reveal">
+      <span class="tag">⚡ A Solução</span>
+      <h2 class="section-title">Em 2026, existe uma maneira<br><span class="text-green">completamente diferente</span> de criar</h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted); margin-bottom:8px; font-size:1rem;">
+        Não mais meses de trabalho solitário. Não mais dependência de equipe cara.
+        Não mais paralisia de "não sei por onde começar."
+      </p>
+      <p style="color:var(--muted); margin-bottom:28px; font-size:1rem;">
+        O <strong style="color:var(--text)">Claude Opus 4.6</strong> — o modelo de IA com o melhor desempenho do mundo em
+        tarefas de criação de conhecimento (80,9% no benchmark SWE-bench) — agora tem uma ferramenta
+        chamada <strong style="color:var(--green)">Claude Code</strong>.
+      </p>
+    </div>
+
+    <div class="solucao-list reveal">
+      <div class="solucao-item">
+        <span class="solucao-icon">📝</span>
+        <p><strong>Gera o conteúdo completo do curso</strong> Estruturado, didático, com exercícios práticos — 8 aulas de um módulo enquanto você dorme com /loop.</p>
+      </div>
+      <div class="solucao-item">
+        <span class="solucao-icon">🎯</span>
+        <p><strong>Escreve a copy da landing page</strong> Com gatilhos mentais pesados, ancoragem de preço e FAQ que elimina objeções antes de aparecerem.</p>
+      </div>
+      <div class="solucao-item">
+        <span class="solucao-icon">💻</span>
+        <p><strong>Constrói o App Web da área de membros</strong> Em Next.js com autenticação, progresso por aula e design profissional. O que custaria R$15.000, pronto em horas.</p>
+      </div>
+      <div class="solucao-item">
+        <span class="solucao-icon">📱</span>
+        <p><strong>Cria os criativos para Meta Ads</strong> Textos, headlines e variações otimizadas para passar no filtro Andromeda do algoritmo do Facebook em 2026.</p>
+      </div>
+      <div class="solucao-item">
+        <span class="solucao-icon">📧</span>
+        <p><strong>Escreve os 7 emails de lançamento</strong> Sequência completa que aquece a lista, cria antecipação e converte quem ainda estava em dúvida.</p>
+      </div>
+      <div class="solucao-item">
+        <span class="solucao-icon">🏭</span>
+        <p><strong>Configura o checkout automático na Kiwify</strong> Comprou → webhook → acesso liberado → email de boas-vindas. Zero processo manual.</p>
+      </div>
+    </div>
+
+    <div class="reveal" style="text-align:center; margin-top:40px;">
+      <p style="font-size:1.1rem; font-weight:700; color:var(--text); margin-bottom:6px;">
+        Uma vez configurada, <span class="text-green">a fábrica trabalha para você.</span>
+      </p>
+      <p style="color:var(--muted);">O segundo produto leva 20% do tempo do primeiro. O terceiro, menos ainda.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     BENEFÍCIOS
+     ============================================ -->
+<section id="beneficios" class="section">
+  <div class="container">
+    <div class="reveal text-center">
+      <span class="tag">🎓 O Que Você Vai Dominar</span>
+      <h2 class="section-title">12 capacidades que transformam<br>seu computador em uma <span class="text-green">fábrica</span></h2>
+      <div class="divider divider-center"></div>
+    </div>
+
+    <div class="benefits-grid">
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>O sistema CLAUDE.md que nunca esquece o seu nicho</h4>
+        <p>Memoriza seu produto, sua voz, seu público e seus concorrentes. Uma vez configurado, nunca mais explique contexto do zero para o Claude.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>9 Skills prontas que automatizam todo o ciclo</h4>
+        <p>Cada skill é um especialista diferente: copywriter, desenvolvedor, estrategista de tráfego, designer de emails. Você roda a skill, o Claude executa.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>App Web em Next.js que impressiona no primeiro acesso</h4>
+        <p>Área de membros profissional com autenticação, progresso por aula e design limpo. O que custaria R$8.000–R$15.000, pronto em horas.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>O /loop que gera 8 aulas enquanto você dorme</h4>
+        <p>Automação sequencial real: você define o objetivo, o Claude executa cada iteração sem pedir confirmação. Acorda com o módulo inteiro pronto.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>Copy de vendas que faz não comprar doer</h4>
+        <p>Estrutura de 10 seções com gatilhos de escassez, ancoragem de preço e FAQ que elimina objeções antes de aparecerem.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>Meta Ads com Advantage+ que o algoritmo ama</h4>
+        <p>Criativos gerados para passar no filtro Andromeda, estrutura CBO que o próprio Meta recomenda em 2026. Sem achismo.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>Webhook Kiwify: comprou → acessou em segundos</h4>
+        <p>Sem processo manual, sem email manual, sem cliente esperando. A experiência que retém e gera depoimentos espontâneos.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>Background Agents trabalhando em paralelo</h4>
+        <p>3 agentes simultâneos: um gerando conteúdo, outro revisando copy, outro preparando emails. O que levaria 3 semanas, leva 3 horas.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>7 emails de lançamento que convertem os indecisos</h4>
+        <p>Cada email tem um trabalho específico: antecipação → valor → abertura → urgência → escassez real. Sequência completa pronta.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>Framework de análise semanal em 20 minutos</h4>
+        <p>Qual criativo pausar, qual escalar, quando criar variações. Transforma dados do Gerenciador em decisões acionáveis toda segunda-feira.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>Segundo produto em 48h usando o sistema já construído</h4>
+        <p>Você não recomeça do zero. O CLAUDE.md, as Skills, o App Web — tudo já existe. O segundo produto custa 20% do esforço do primeiro.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-check">✓</div>
+        <h4>Plano de manutenção de 12 meses incluso</h4>
+        <p>Checklist mensal, trimestral e semestral. Sistemas que duram anos, não semanas. O produto continua vendendo e melhorando sem você reinventar a roda.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     O QUE VOCÊ RECEBE
+     ============================================ -->
+<section id="conteudo" class="section">
+  <div class="container">
+    <div class="reveal text-center">
+      <span class="tag tag-gold">📦 Tudo que Você Recebe</span>
+      <h2 class="section-title">37 aulas em 8 módulos completos<br>+ bônus que valem mais que o curso</h2>
+      <div class="divider divider-center"></div>
+    </div>
+
+    <div class="modules-list reveal">
+      <div class="module-row">
+        <div class="module-num">M1</div>
+        <div class="module-name">Fundação e CLAUDE.md — A Memória Persistente do Seu Negócio</div>
+        <div class="module-value">R$47</div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">M2</div>
+        <div class="module-name">Skills e Automação — Seu Time de Especialistas em IA</div>
+        <div class="module-value">R$97</div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">M3</div>
+        <div class="module-name">Estrutura e Conteúdo do Curso — Da Ideia ao Produto Completo</div>
+        <div class="module-value">R$147</div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">M4</div>
+        <div class="module-name">Copy de Alta Conversão — Palavras que Vendem 24h por Dia</div>
+        <div class="module-value">R$197</div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">M5</div>
+        <div class="module-name">Landing Page Profissional em HTML — Design que Converte</div>
+        <div class="module-value">R$147</div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">M6</div>
+        <div class="module-name">App Web em Next.js + Deploy na Vercel — Área de Membros Real</div>
+        <div class="module-value">R$297</div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">M7</div>
+        <div class="module-name">Kiwify + Emails + Automação Completa — A Máquina de Vendas</div>
+        <div class="module-value">R$147</div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">M8</div>
+        <div class="module-name">Meta Ads do Zero ao Lucro — Tráfego Pago que Funciona</div>
+        <div class="module-value">R$247</div>
+      </div>
+      <div class="module-row">
+        <div class="module-num">B+</div>
+        <div class="module-name">4 Módulos Bônus: Lançamento · Segundo Produto · /loop + Agentes · Escala</div>
+        <div class="module-value">R$388</div>
+      </div>
+      <div class="module-row total-row">
+        <div class="module-num" style="background:var(--green);color:#000;border:none;">✓</div>
+        <div class="module-name">VALOR TOTAL DO CURSO</div>
+        <div class="module-value">R$1.703</div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 48px;">
+      <h3 style="font-size:1.3rem; font-weight:800; margin-bottom:24px;">
+        + Bônus Exclusivos Inclusos:
+      </h3>
+    </div>
+
+    <div class="bonus-cards reveal">
+      <div class="bonus-card">
+        <span class="bonus-badge">🎁 Bônus 1</span>
+        <h4>MODO FÁBRICA: O Manual de Campo</h4>
+        <p>Ebook exclusivo — o "faça agora" do curso. Enquanto o curso ensina o porquê, este guia entrega o protocolo de execução:</p>
+        <ul class="bonus-list">
+          <li>Checklist de 47 pontos em ordem de execução</li>
+          <li>12 Prompts Mestres prontos para copiar e colar</li>
+          <li>5 templates: emails, posts de Instagram, depoimentos</li>
+          <li>A Regra dos 20% para escalar sem quebrar o Meta Ads</li>
+        </ul>
+        <div class="bonus-value">Valor: <span>R$97</span> — incluso sem custo adicional</div>
+      </div>
+      <div class="bonus-card">
+        <span class="bonus-badge">🎁 Bônus 2</span>
+        <h4>As 9 Skills Prontas Para Usar Hoje</h4>
+        <p>Arquivos <code style="font-size:.8rem;color:var(--green);">.claude/skills/</code> prontos para copiar para o seu projeto. Não configura nada do zero:</p>
+        <ul class="bonus-list">
+          <li>criar-estrutura-curso · gerar-conteudo-completo</li>
+          <li>escrever-copy-vendas · montar-pagina-vendas</li>
+          <li>gerar-app-web · configurar-kiwify</li>
+          <li>gerar-emails-lancamento · gerar-criativos-ads</li>
+          <li>gerar-ebook-bonus</li>
+        </ul>
+        <div class="bonus-value">Valor: <span>R$197</span> — incluso sem custo adicional</div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:24px; text-align:center; padding:20px; background:var(--bg2); border-radius:var(--radius); border:1px solid rgba(0,232,122,.2);">
+      <p style="font-size:1rem; color:var(--muted);">
+        <strong style="color:var(--green); font-size:1.2rem;">Valor total do pacote completo: R$1.997</strong><br>
+        Você recebe tudo por um único pagamento. Sem mensalidade. Sem renovação.
+      </p>
+    </div>
+
+    <div class="reveal" style="text-align:center; margin-top:32px;">
+      <a href="#preco" class="btn-cta">
+        🔒 Ver o Preço de Lançamento →
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     DEPOIMENTOS
+     ============================================ -->
+<section id="depoimentos" class="section">
+  <div class="container">
+    <div class="reveal text-center">
+      <span class="tag">💬 Resultados Reais</span>
+      <h2 class="section-title">O que os alunos estão conquistando</h2>
+      <div class="divider divider-center"></div>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">
+          Eu tinha tentado criar um curso duas vezes antes e nunca terminei.
+          Com a Fábrica, terminei em 9 dias. No décimo dia já tinha a landing page no ar.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div class="testimonial-name">[Nome do Aluno]</div>
+            <div class="testimonial-role">[Profissão] · [Cidade]</div>
+          </div>
+        </div>
+        <span class="testimonial-result">R$2.340 na primeira semana</span>
+      </div>
+
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">
+          Sou nutricionista e nunca toquei em código na vida. O Claude construiu o App Web
+          inteiro enquanto eu focava no conteúdo. Meus alunos acharam que eu tinha contratado
+          um desenvolvedor.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">A</div>
+          <div>
+            <div class="testimonial-name">[Nome do Aluno]</div>
+            <div class="testimonial-role">Nutricionista · [Cidade]</div>
+          </div>
+        </div>
+        <span class="testimonial-result">CPA de R$63 nos primeiros 30 dias</span>
+      </div>
+
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">
+          Do zero ao primeiro anúncio no ar foram 11 dias. Fiz isso à noite,
+          depois do meu trabalho fixo. Hoje o produto vende enquanto estou no trabalho.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">R</div>
+          <div>
+            <div class="testimonial-name">[Nome do Aluno]</div>
+            <div class="testimonial-role">[Profissão] · [Cidade]</div>
+          </div>
+        </div>
+        <span class="testimonial-result">ROAS 2.8x no segundo mês</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     PARA QUEM É / NÃO É
+     ============================================ -->
+<section id="publico" class="section-sm">
+  <div class="container">
+    <div class="reveal text-center">
+      <h2 class="section-title">Este curso é para você?</h2>
+      <div class="divider divider-center"></div>
+    </div>
+    <div class="publico-grid reveal">
+      <div class="publico-col yes">
+        <h3>✅ É para você se...</h3>
+        <div class="publico-item">
+          <span class="publico-icon">✅</span>
+          <span>Tem conhecimento em alguma área e quer transformar em renda recorrente</span>
+        </div>
+        <div class="publico-item">
+          <span class="publico-icon">✅</span>
+          <span>Já ouviu falar de infoprodutos mas nunca lançou por parecer caro ou complexo</span>
+        </div>
+        <div class="publico-item">
+          <span class="publico-icon">✅</span>
+          <span>Usa IA de forma superficial e quer usar como sistema de produção profissional</span>
+        </div>
+        <div class="publico-item">
+          <span class="publico-icon">✅</span>
+          <span>Quer um negócio digital que venda enquanto você dorme — sem equipe, sem CLT</span>
+        </div>
+        <div class="publico-item">
+          <span class="publico-icon">✅</span>
+          <span>Tem disposição para executar, não apenas assistir aulas</span>
+        </div>
+      </div>
+      <div class="publico-col no">
+        <h3>🚫 Não é para você se...</h3>
+        <div class="publico-item">
+          <span class="publico-icon">🚫</span>
+          <span>Quer entender IA superficialmente sem construir nada concreto</span>
+        </div>
+        <div class="publico-item">
+          <span class="publico-icon">🚫</span>
+          <span>Acredita que existe atalho sem nenhum trabalho envolvido</span>
+        </div>
+        <div class="publico-item">
+          <span class="publico-icon">🚫</span>
+          <span>Não tem nenhuma área de conhecimento para ensinar</span>
+        </div>
+        <div class="publico-item">
+          <span class="publico-icon">🚫</span>
+          <span>Quer resultado sem investir nada em tráfego pago (mínimo R$60/dia)</span>
+        </div>
+        <div class="publico-item">
+          <span class="publico-icon">🚫</span>
+          <span>Busca mais um curso para assistir sem implementar uma linha sequer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     PREÇO E ANCORAGEM
+     ============================================ -->
+<section id="preco" class="section">
+  <div class="container">
+    <div class="reveal text-center">
+      <span class="tag tag-red">💰 Quanto Custaria Sem Este Curso</span>
+      <h2 class="section-title">Terceirizar tudo que você aprende<br>custaria entre <span class="text-red">R$18.000 e R$37.000</span></h2>
+      <div class="divider divider-center"></div>
+    </div>
+
+    <div class="price-comparison reveal">
+      <div class="price-comp-item">
+        <span class="svc">Copywriter (página de vendas)</span>
+        <span class="val">R$3k–R$8k</span>
+      </div>
+      <div class="price-comp-item">
+        <span class="svc">Designer (landing page)</span>
+        <span class="val">R$2k–R$5k</span>
+      </div>
+      <div class="price-comp-item">
+        <span class="svc">Desenvolvedor (App Web)</span>
+        <span class="val">R$8k–R$15k</span>
+      </div>
+      <div class="price-comp-item">
+        <span class="svc">Especialista em tráfego</span>
+        <span class="val">R$3k–R$5k</span>
+      </div>
+      <div class="price-comp-item">
+        <span class="svc">Consultor de produto digital</span>
+        <span class="val">R$2k–R$4k</span>
+      </div>
+    </div>
+    <div class="price-total-row price-comp-item reveal" style="margin-bottom:0">
+      <span class="svc">Total terceirizado (e você ainda depende deles)</span>
+      <span class="val">R$18.000 – R$37.000</span>
+    </div>
+
+    <div class="price-box reveal" style="margin-top:48px;">
+      <span class="price-offer-tag">🔥 Oferta de Lançamento — Tempo Limitado</span>
+
+      <p class="price-original">Valor total do pacote: <strong>R$1.997</strong></p>
+      <p class="price-prev">Preço previsto após lançamento: R$97</p>
+
+      <div class="price-current"><sup>R$</sup>47</div>
+      <p class="price-installment">ou <strong>12x de R$4,40</strong> no cartão de crédito</p>
+
+      <div class="price-timer-wrap">
+        <p class="price-timer-label">⏳ Esta oferta encerra em:</p>
+        <div class="price-timer">
+          <div class="pt-unit">
+            <div class="pt-number" id="p-h">00</div>
+            <div class="pt-label">HORAS</div>
+          </div>
+          <span class="pt-sep">:</span>
+          <div class="pt-unit">
+            <div class="pt-number" id="p-m">00</div>
+            <div class="pt-label">MIN</div>
+          </div>
+          <span class="pt-sep">:</span>
+          <div class="pt-unit">
+            <div class="pt-number" id="p-s">00</div>
+            <div class="pt-label">SEG</div>
+          </div>
+        </div>
+      </div>
+
+      <ul class="price-includes">
+        <li class="price-include-item">
+          <span class="pi-icon">✓</span>
+          37 aulas em 8 módulos completos + 4 módulos bônus
+        </li>
+        <li class="price-include-item">
+          <span class="pi-icon">✓</span>
+          Bônus: MODO FÁBRICA — O Manual de Campo (R$97)
+        </li>
+        <li class="price-include-item">
+          <span class="pi-icon">✓</span>
+          Bônus: 9 Skills prontas para usar hoje (R$197)
+        </li>
+        <li class="price-include-item">
+          <span class="pi-icon">✓</span>
+          Acesso vitalício — incluindo todas as atualizações futuras
+        </li>
+        <li class="price-include-item">
+          <span class="pi-icon">✓</span>
+          Garantia incondicional de 7 dias — sem perguntas
+        </li>
+      </ul>
+
+      <a href="#" class="btn-cta btn-cta-lg btn-cta-gold" style="width:100%; max-width:480px;">
+        🔒 SIM — Quero Entrar Para a Fábrica Agora
+      </a>
+      <div class="cta-sub">
+        <span>Acesso imediato</span>
+        <span>Pix, cartão ou boleto</span>
+        <span>Garantia de 7 dias</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     GARANTIA
+     ============================================ -->
+<section id="garantia" class="section-sm">
+  <div class="container">
+    <div class="guarantee-box reveal">
+      <div class="guarantee-seal">
+        <span class="seal-days">7</span>
+        <span class="seal-text">dias de<br>garantia</span>
+      </div>
+      <h3>Garantia Incondicional de 7 Dias</h3>
+      <p>
+        Você tem 7 dias para usar o curso, implementar, testar.
+        Se por qualquer motivo — <strong>qualquer motivo mesmo</strong> — você quiser o dinheiro de volta,
+        é só mandar uma mensagem.
+        <br><br>
+        Sem perguntas. Sem processo. Sem burocracia.
+        <strong>R$47 de volta em até 5 dias úteis, integral.</strong>
+      </p>
+      <p class="guarantee-note">
+        O risco é zero. O risco de não agir, não é.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     CTA FINAL — COMPARAÇÃO DE ESCOLHAS
+     ============================================ -->
+<section id="cta-final">
+  <div class="container">
+    <div class="reveal text-center">
+      <h2 class="cta-final-title">Você chegou até aqui.<br>Isso significa algo.</h2>
+      <p style="color:var(--muted); font-size:1rem; max-width:560px; margin:0 auto 8px;">
+        Agora tem duas opções. Só uma delas leva a algum lugar.
+      </p>
+    </div>
+
+    <div class="cta-compare reveal">
+      <div class="cta-option bad">
+        <h4>✗ Opção 1 — O mesmo de sempre</h4>
+        <ul>
+          <li>Fechar esta página</li>
+          <li>Continuar planejando</li>
+          <li>Comprar outro curso daqui 3 meses</li>
+          <li>Lançar quando CPA estiver 50% mais caro</li>
+          <li>Competir com quem tem 12 meses de vantagem</li>
+        </ul>
+      </div>
+      <div class="cta-option good">
+        <h4>✓ Opção 2 — A decisão de hoje</h4>
+        <ul>
+          <li>Garantir o acesso agora por R$47</li>
+          <li>Começar pelo Módulo 1 hoje à noite</li>
+          <li>Ter estrutura de produto em 3 dias</li>
+          <li>Produto lançado em 7–14 dias</li>
+          <li>Primeiras vendas antes do fim do mês</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="reveal text-center" style="margin-top:32px;">
+      <a href="#" class="btn-cta btn-cta-lg">
+        🚀 Garantir Minha Vaga — R$47
+      </a>
+      <div class="cta-sub" style="margin-top:14px;">
+        <span>Acesso imediato</span>
+        <span>Garantia de 7 dias</span>
+        <span>Oferta encerra em breve</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     FAQ
+     ============================================ -->
+<section id="faq" class="section">
+  <div class="container">
+    <div class="reveal text-center">
+      <span class="tag">❓ Dúvidas Frequentes</span>
+      <h2 class="section-title">Tudo o que você precisa saber<br>antes de decidir</h2>
+      <div class="divider divider-center"></div>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Eu não tenho experiência técnica. Isso é para mim?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Sim. O curso foi construído assumindo que você nunca abriu um terminal.
+            O Claude Code faz o trabalho técnico — você aprende a dar as instruções certas.
+            <strong>Se você consegue usar o WhatsApp, você consegue usar o Claude Code.</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Já comprei cursos de IA que não funcionaram. Por que este seria diferente?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Porque a maioria dos cursos de IA ensina a usar IA como ferramenta de chat —
+            para escrever textos, resumir documentos. <strong>A Fábrica ensina a usar Claude Code
+            como sistema de produção autônomo</strong>, com Skills que automatizam tarefas inteiras.
+            É uma diferença fundamental de abordagem — não é mais um curso de "como usar prompts".
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Quanto tempo vou precisar por dia?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Para completar o curso e lançar o primeiro produto: <strong>2 a 3 horas por dia durante 7 a 14 dias</strong>.
+            Isso assume que você implementa conforme assiste. Se só assistir sem implementar, não funciona.
+            Mas se executar, o sistema acelera exponencialmente a partir do Módulo 2.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Preciso ter uma audiência antes de começar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Não. O módulo de Meta Ads ensina a construir tráfego do zero com anúncios pagos.
+            Mas se você já tem audiência (Instagram, lista de email, WhatsApp),
+            <strong>o módulo bônus de lançamento semente</strong> permite validar sem investir em anúncios inicialmente.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Vou precisar pagar por outras ferramentas além do curso?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Sim — mas com custo mínimo no início:
+            <strong>Claude Code Pro: ~US$20/mês · Vercel: grátis para começar · Kiwify: ~9,99% por venda (sem mensalidade) · Meta Ads: você define o budget (mínimo R$60/dia).</strong>
+            Total estimado: R$150–200/mês em ferramentas + budget de anúncios.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          O curso vai ficar desatualizado quando o Claude atualizar?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Os princípios do sistema — CLAUDE.md, Skills, automação, funil de vendas — são estruturais
+            e funcionam com qualquer versão do Claude. As atualizações de ferramenta normalmente
+            <strong>adicionam capacidade, não removem</strong>. O módulo bônus 4 ensina especificamente
+            como acompanhar atualizações e manter o sistema funcionando.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Qual o prazo para ter o primeiro produto lançado?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <strong>7 a 14 dias para quem executa.</strong> Alguns alunos levam até 21 dias porque
+            revisam o conteúdo com mais calma. O que determina o prazo é a velocidade de execução
+            — não a complexidade do sistema.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          E se eu não conseguir vender?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            O curso cobre o funil completo: produto, copy, landing page, App Web, emails e Meta Ads.
+            Se você implementar tudo e não tiver resultados, aciona a garantia e recebe o reembolso
+            integral em 7 dias. Mas a pergunta certa é:
+            <strong>você vai implementar, ou vai assistir e esperar que algo mude sozinho?</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal text-center" style="margin-top:48px;">
+      <a href="#" class="btn-cta">
+        🔒 Quero Garantir Meu Acesso Agora
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     PS / URGÊNCIA FINAL
+     ============================================ -->
+<section id="ps-section">
+  <div class="container">
+    <div class="ps-box reveal">
+      <h3>P.S. — Leia isso antes de fechar.</h3>
+      <p>
+        Você não está aqui por acaso. Você chegou até o final desta página porque
+        uma parte de você sabe que isso é real. Que é possível. Que você tem o conhecimento necessário.
+      </p>
+      <p>
+        A única coisa que separa onde você está hoje de onde quer chegar é a decisão de agir.
+      </p>
+      <p>
+        <strong>Este preço de R$47 é de lançamento.</strong> Quando os primeiros depoimentos chegarem,
+        o preço vai para R$97 — e depois para R$197, que é onde esse tipo de sistema precisa estar.
+        <strong>Você está lendo isso no momento mais barato que vai existir.</strong>
+      </p>
+      <p>
+        Não deixa para amanhã o que pode construir a partir de agora.
+      </p>
+      <div style="margin-top:24px; text-align:center;">
+        <a href="#" class="btn-cta btn-cta-gold">
+          🏭 Garantir Minha Vaga — R$47
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer>
+  <p>
+    <strong>Fábrica de Infoprodutos com IA</strong> — Crie, Lance e Venda Produtos Digitais 100% com Claude<br>
+    <a href="#">Política de Privacidade</a> · <a href="#">Termos de Uso</a> · <a href="#">Suporte</a><br><br>
+    Garantia incondicional de 7 dias via Kiwify. Acesso imediato após confirmação do pagamento.<br>
+    Os resultados apresentados são de alunos reais e não garantem resultados idênticos —
+    resultados dependem do nível de implementação de cada aluno.
+  </p>
+</footer>
+
+
+<!-- ============================================
+     JAVASCRIPT
+     ============================================ -->
+<script>
+  // ---- COUNTDOWN TIMER (72h a partir da primeira visita) ----
+  function getOrSetDeadline() {
+    const key = 'fabrica_deadline';
+    let dl = localStorage.getItem(key);
+    if (!dl) {
+      dl = Date.now() + (72 * 60 * 60 * 1000);
+      localStorage.setItem(key, dl);
+    }
+    return parseInt(dl);
+  }
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateTimers() {
+    const now  = Date.now();
+    const dl   = getOrSetDeadline();
+    const diff = Math.max(0, dl - now);
+
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    const hStr = pad(h), mStr = pad(m), sStr = pad(s);
+
+    // Sticky bar
+    document.getElementById('s-h').textContent = hStr;
+    document.getElementById('s-m').textContent = mStr;
+    document.getElementById('s-s').textContent = sStr;
+
+    // Price section
+    const ph = document.getElementById('p-h');
+    const pm = document.getElementById('p-m');
+    const ps = document.getElementById('p-s');
+    if (ph) { ph.textContent = hStr; pm.textContent = mStr; ps.textContent = sStr; }
+  }
+
+  updateTimers();
+  setInterval(updateTimers, 1000);
+
+
+  // ---- SCROLL REVEAL ----
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer  = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+
+  // ---- FAQ ACCORDION ----
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    // Fecha todos
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    // Abre o clicado (se não estava aberto)
+    if (!isOpen) item.classList.add('open');
+  }
+
+
+  // ---- STICKY BAR: oculta no hero, aparece depois ----
+  const stickyBar = document.getElementById('sticky-bar');
+  const heroSection = document.getElementById('hero');
+
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      stickyBar.style.transform = e.isIntersecting ? 'translateY(-100%)' : 'translateY(0)';
+      stickyBar.style.transition = 'transform .3s ease';
+    });
+  }, { threshold: 0.05 });
+
+  heroObserver.observe(heroSection);
+  // Estado inicial: oculto
+  stickyBar.style.transform = 'translateY(-100%)';
+</script>
+
+</body>
+</html>
