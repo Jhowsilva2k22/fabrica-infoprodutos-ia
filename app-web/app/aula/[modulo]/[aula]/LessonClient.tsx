@@ -11,48 +11,67 @@ interface Props {
 
 export default function LessonClient({ content, lessonKey }: Props) {
   const [done, setDone] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const raw = localStorage.getItem('fabrica_completed');
     if (raw) {
       try {
-        const set = new Set<string>(JSON.parse(raw));
-        setDone(set.has(lessonKey));
+        const arr: string[] = JSON.parse(raw);
+        setDone(arr.includes(lessonKey));
       } catch {}
     }
   }, [lessonKey]);
 
   const toggleComplete = () => {
     const raw = localStorage.getItem('fabrica_completed');
-    let set: Set<string>;
+    let arr: string[];
     try {
-      set = new Set<string>(raw ? JSON.parse(raw) : []);
+      arr = raw ? JSON.parse(raw) : [];
     } catch {
-      set = new Set<string>();
+      arr = [];
     }
+
     if (done) {
-      set.delete(lessonKey);
+      arr = arr.filter((k) => k !== lessonKey);
     } else {
-      set.add(lessonKey);
+      if (!arr.includes(lessonKey)) arr.push(lessonKey);
     }
-    localStorage.setItem('fabrica_completed', JSON.stringify([...set]));
+
+    localStorage.setItem('fabrica_completed', JSON.stringify(arr));
     setDone(!done);
     window.dispatchEvent(new Event('fabrica_progress'));
   };
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.5rem' }}>
-        <button
-          className={`btn-complete${done ? ' done' : ''}`}
-          onClick={toggleComplete}
-        >
-          {done ? '✓ Concluída' : '◯ Marcar como concluída'}
-        </button>
+      {/* Markdown content */}
+      <div className="lesson-content">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </div>
 
-      <div className="lesson-body">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+      {/* Completion */}
+      <div className="lesson-completion">
+        <div
+          className={`completion-checkbox${mounted && done ? ' checked' : ''}`}
+          onClick={mounted ? toggleComplete : undefined}
+          role="checkbox"
+          aria-checked={mounted ? done : false}
+          suppressHydrationWarning
+        >
+          {mounted && done ? '✓' : ''}
+        </div>
+        <div className="completion-text">
+          <div className="completion-label" onClick={mounted ? toggleComplete : undefined}>
+            {mounted && done ? 'Aula concluída ✓' : 'Marcar aula como concluída'}
+          </div>
+          <div className="completion-sublabel">
+            {mounted && done
+              ? 'Progresso salvo — continue para a próxima aula'
+              : 'Marque quando terminar para rastrear seu progresso'}
+          </div>
+        </div>
       </div>
     </>
   );

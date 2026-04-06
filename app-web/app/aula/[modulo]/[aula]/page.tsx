@@ -26,7 +26,7 @@ export default async function LessonPage({ params }: Props) {
   if (existsSync(contentPath)) {
     content = readFileSync(contentPath, 'utf-8');
   } else {
-    content = `# Conteúdo em Breve\n\nEsta aula será publicada em breve.`;
+    content = `# Conteúdo em Breve\n\nEsta aula será publicada em breve. Fique de olho nas atualizações!`;
   }
 
   const mod = getModuleById(modulo);
@@ -34,46 +34,75 @@ export default async function LessonPage({ params }: Props) {
   const nav = getLessonNav(modulo, aula);
 
   return (
-    <div>
-      {/* Top bar */}
-      <div className="top-bar">
-        <div className="breadcrumb">
-          <Link href="/" style={{ color: 'var(--muted)', textDecoration: 'none' }}>
-            Início
-          </Link>
-          {' › '}
+    <div className="lesson-wrap">
+      {/* Topbar */}
+      <div className="lesson-topbar">
+        <div className="lesson-breadcrumb">
+          <Link href="/">Início</Link>
+          <span className="sep">›</span>
           <span>Módulo {mod?.number}</span>
-          {' › '}
-          {lesson?.title}
+          <span className="sep">›</span>
+          <span className="current">{lesson?.title}</span>
         </div>
-        <div className="lesson-counter">
-          Aula {nav.index + 1} de {nav.total}
-        </div>
+        <span className="lesson-badge">Módulo {mod?.number}</span>
+        <span className="lesson-counter">Aula {nav.index + 1} de {nav.total}</span>
       </div>
 
-      {/* Lesson content + complete button */}
-      <LessonClient content={content} lessonKey={`${modulo}/${aula}`} />
+      {/* Lesson header */}
+      <div className="lesson-header">
+        <h1 className="lesson-title">{lesson?.title ?? aula}</h1>
+        {lesson?.description && (
+          <p className="lesson-description">{lesson.description}</p>
+        )}
+      </div>
+
+      {/* Content + completion */}
+      <LessonClient
+        content={content}
+        lessonKey={`${modulo}/${aula}`}
+      />
 
       {/* Navigation */}
       <div className="lesson-nav">
         {nav.prev ? (
           <Link
             href={`/aula/${nav.prev.moduleId}/${nav.prev.lessonId}`}
-            className="btn-nav"
+            className="nav-btn prev"
           >
-            ← {nav.prev.title}
+            <span className="nav-btn-arrow">←</span>
+            <div className="nav-btn-text">
+              <div className="nav-btn-label">Aula anterior</div>
+              <div className="nav-btn-title">{nav.prev.title}</div>
+            </div>
           </Link>
         ) : (
-          <Link href="/" className="btn-nav">
-            ← Início
+          <Link href="/" className="nav-btn prev">
+            <span className="nav-btn-arrow">←</span>
+            <div className="nav-btn-text">
+              <div className="nav-btn-label">Voltar</div>
+              <div className="nav-btn-title">Dashboard</div>
+            </div>
           </Link>
         )}
-        {nav.next && (
+
+        {nav.next ? (
           <Link
             href={`/aula/${nav.next.moduleId}/${nav.next.lessonId}`}
-            className="btn-nav primary"
+            className="nav-btn next"
           >
-            {nav.next.title} →
+            <span className="nav-btn-arrow">→</span>
+            <div className="nav-btn-text">
+              <div className="nav-btn-label">Próxima aula</div>
+              <div className="nav-btn-title">{nav.next.title}</div>
+            </div>
+          </Link>
+        ) : (
+          <Link href="/" className="nav-btn next">
+            <span className="nav-btn-arrow">→</span>
+            <div className="nav-btn-text">
+              <div className="nav-btn-label">Fim do curso</div>
+              <div className="nav-btn-title">Ver dashboard</div>
+            </div>
           </Link>
         )}
       </div>

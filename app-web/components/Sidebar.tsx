@@ -7,34 +7,39 @@ import { courseModules, getTotalLessons } from '@/lib/courseData';
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
-  const [openModules, setOpenModules] = useState<Set<string>>(new Set());
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Parse current module/lesson from pathname
   const parts = pathname.split('/').filter(Boolean);
   const currentModule = parts[1] || '';
   const currentLesson = parts[2] || '';
 
+  // Initialize openModules synchronously from pathname to avoid hydration mismatch
+  const initialOpen = currentModule || 'modulo-1';
+  const [openModules, setOpenModules] = useState<string[]>([initialOpen]);
+
+  const [completed, setCompleted] = useState<string[]>([]);
+  const [mounted, setMounted] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     const raw = localStorage.getItem('fabrica_completed');
     if (raw) {
-      try { setCompleted(new Set(JSON.parse(raw))); } catch {}
+      try { setCompleted(JSON.parse(raw)); } catch {}
     }
-    // Open current module by default
-    if (currentModule) {
-      setOpenModules(new Set([currentModule]));
-    } else {
-      setOpenModules(new Set(['modulo-1']));
+    // Ensure current module is open after mount
+    if (currentModule && !openModules.includes(currentModule)) {
+      setOpenModules((prev) => [...prev, currentModule]);
     }
-  }, [currentModule]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Re-read completed when navigating
+  // Re-read completed when a lesson is toggled
   useEffect(() => {
     const handler = () => {
       const raw = localStorage.getItem('fabrica_completed');
       if (raw) {
-        try { setCompleted(new Set(JSON.parse(raw))); } catch {}
+        try { setCompleted(JSON.parse(raw)); } catch {}
       }
     };
     window.addEventListener('fabrica_progress', handler);
@@ -42,31 +47,27 @@ export default function Sidebar() {
   }, []);
 
   const toggleModule = (moduleId: string) => {
-    setOpenModules((prev) => {
-      const next = new Set(prev);
-      if (next.has(moduleId)) next.delete(moduleId);
-      else next.add(moduleId);
-      return next;
-    });
+    setOpenModules((prev) =>
+      prev.includes(moduleId) ? prev.filter((id) => id !== moduleId) : [...prev, moduleId]
+    );
   };
 
   const totalLessons = getTotalLessons();
-  const completedCount = completed.size;
-  const progressPct = Math.round((completedCount / totalLessons) * 100);
+  const completedSet = new Set(completed);
+  const completedCount = mounted ? completedSet.size : 0;
+  const progressPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
 
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
     <>
-      {/* Hamburger */}
+      {/* Mobile toggle */}
       <button
-        className="hamburger"
+        className="sidebar-toggle"
         onClick={() => setSidebarOpen((v) => !v)}
-        aria-label="Toggle menu"
+        aria-label="Abrir menu"
       >
-        <span />
-        <span />
-        <span />
+        ☰
       </button>
 
       {/* Overlay */}
@@ -77,66 +78,86 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <nav className={`sidebar${sidebarOpen ? ' open' : ''}`}>
-        {/* Logo */}
-        <div className="sidebar-logo">
+        {/* Brand */}
+        <div className="sidebar-brand">
           <Link href="/" onClick={closeSidebar} style={{ textDecoration: 'none' }}>
-            <h2>Fábrica de Infoprodutos</h2>
-            <p>com IA — Claude Code</p>
+            <div className="sidebar-brand-inner">
+              <div className="brand-icon">🏭</div>
+              <div className="brand-text">
+                <span className="brand-name">Fábrica de Infoprodutos</span>
+                <span className="brand-sub">com IA — Claude Code</span>
+              </div>
+            </div>
           </Link>
         </div>
 
         {/* Progress */}
         <div className="sidebar-progress">
           <div className="progress-label">
-            <span>Progresso do curso</span>
-            <span>{completedCount}/{totalLessons} aulas ({progressPct}%)</span>
+            <span>Progresso</span>
+            <span suppressHydrationWarning>{completedCount}/{totalLessons} ({progressPct}%)</span>
           </div>
           <div className="progress-track">
-            <div className="progress-fill" style={{ width: `${progressPct}%` }} />
+            <div
+              className="progress-fill"
+              style={{ width: `${progressPct}%` }}
+              suppressHydrationWarning
+            />
           </div>
         </div>
 
         {/* Module list */}
-        {courseModules.map((mod) => {
-          const isOpen = openModules.has(mod.id);
-          const isBonus = mod.id === 'modulo-bonus';
-          return (
-            <div key={mod.id} className="module-group">
-              <div className="module-header" onClick={() => toggleModule(mod.id)}>
-                <span className={`module-number${isBonus ? ' bonus' : ''}`}>
-                  {mod.number}
-                </span>
-                <span className="module-title-text">{mod.title}</span>
-                <span className={`module-toggle${isOpen ? ' open' : ''}`}>▼</span>
+        <div className="sidebar-nav">
+          {courseModules.map((mod) => {
+            const isOpen = openModules.includes(mod.id);
+            const isActive = currentModule === mod.id;
+
+            return (
+              <div key={mod.id} className="module-item">
+                <button
+                  className={`module-header${isActive ? ' active' : ''}`}
+                  onClick={() => toggleModule(mod.id)}
+                >
+                  <span className="module-number">{mod.number}</span>
+                  <span className="module-title">{mod.title}</span>
+                  <span className={`module-chevron${isOpen ? ' open' : ''}`}>▶</span>
+                </button>
+
+                {isOpen && (
+                  <div className="lesson-list">
+                    {mod.lessons.map((lesson) => {
+                      const key = `${mod.id}/${lesson.id}`;
+                      const isLessonActive =
+                        currentModule === mod.id && currentLesson === lesson.id;
+                      const isDone = mounted && completedSet.has(key);
+
+                      return (
+                        <Link
+                          key={lesson.id}
+                          href={`/aula/${mod.id}/${lesson.id}`}
+                          className={`lesson-link${isLessonActive ? ' active' : ''}`}
+                          onClick={closeSidebar}
+                        >
+                          <span className={`lesson-dot${isDone ? ' done' : ''}`} suppressHydrationWarning>
+                            {isDone ? '✓' : ''}
+                          </span>
+                          <span className="lesson-title-text">{lesson.title}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
+            );
+          })}
+        </div>
 
-              {isOpen && (
-                <div className="lesson-list">
-                  {mod.lessons.map((lesson) => {
-                    const key = `${mod.id}/${lesson.id}`;
-                    const isActive =
-                      currentModule === mod.id && currentLesson === lesson.id;
-                    const isDone = completed.has(key);
-
-                    return (
-                      <Link
-                        key={lesson.id}
-                        href={`/aula/${mod.id}/${lesson.id}`}
-                        className={`lesson-link${isActive ? ' active' : ''}`}
-                        onClick={closeSidebar}
-                      >
-                        <span className={`lesson-check${isDone ? ' done' : ''}`}>
-                          {isDone ? '✓' : ''}
-                        </span>
-                        {lesson.title}
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {/* Footer */}
+        <div className="sidebar-footer">
+          <Link href="/" onClick={closeSidebar} className="sidebar-home-link">
+            🏠 Início — Dashboard
+          </Link>
+        </div>
       </nav>
     </>
   );
