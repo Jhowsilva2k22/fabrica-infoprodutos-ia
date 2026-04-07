@@ -12,15 +12,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Fabrica de Infoprodutos com IA",
-    template: "%s | Fabrica de Infoprodutos",
+    default: "Fábrica de Infoprodutos com IA",
+    template: "%s | Fábrica de Infoprodutos",
   },
   description: "Crie, Lance e Venda Produtos Digitais 100% com Claude - Curso completo",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://fabrica-infoprodutos.vercel.app"
   ),
   openGraph: {
-    title: "Fabrica de Infoprodutos com IA",
+    title: "Fábrica de Infoprodutos com IA",
     description: "Crie, Lance e Venda Produtos Digitais 100% com Claude - Curso completo",
     type: "website",
     locale: "pt_BR",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07090f",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
 };
