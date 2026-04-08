@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
+import { AuthProvider } from "@/lib/AuthContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -52,8 +53,10 @@ export default function RootLayout({
             }}
           />
         )}
-        <Sidebar />
-        <main className="main-content">{children}</main>
+        <AuthProvider>
+          <Sidebar />
+          <main className="main-content">{children}</main>
+        </AuthProvider>
       </body>
     </html>
   );
