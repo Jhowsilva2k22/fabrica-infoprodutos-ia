@@ -8,6 +8,9 @@ import { courseModules, getTotalLessons } from '@/lib/courseData';
 export default function Sidebar() {
   const pathname = usePathname();
 
+  // Não mostrar sidebar na página de login
+  if (pathname === '/login') return null;
+
   // Parse current module/lesson from pathname
   const parts = pathname.split('/').filter(Boolean);
   const currentModule = parts[1] || '';
