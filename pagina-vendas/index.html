@@ -925,199 +925,34 @@
         .mockup-chart svg { width: 100%; height: 100%; }
         .mockup-chart-label { position: absolute; top: 8px; left: 12px; font-size: 11px; color: #86868b; font-family: Inter, sans-serif; }
 
-        /* ========================
-           PRE-CHECKOUT SECTION
-           ======================== */
-        .pre-checkout {
-            padding: 5rem 2rem;
-            background: var(--bg);
-            border-top: 1px solid var(--border);
-        }
-        .pre-checkout-container {
-            max-width: 580px;
-            margin: 0 auto;
-        }
-        .pre-checkout-box {
-            background: linear-gradient(160deg, rgba(99,102,241,0.06), rgba(0,0,0,0.9));
-            border: 1px solid rgba(99,102,241,0.25);
-            border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-        }
-        .pre-checkout-box::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
-        }
-        .pco-header {
-            padding: 2rem 2rem 1.2rem;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-        }
-        .pco-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            color: #000;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 5px 14px;
-            border-radius: 20px;
-            margin-bottom: 14px;
-        }
-        .pco-header h2 {
-            font-size: clamp(22px, 3vw, 28px);
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 6px;
-        }
-        .pco-header p {
-            color: var(--text-dim);
-            font-size: 14px;
-        }
-        .pco-price-area {
-            padding: 1.5rem 2rem;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-        }
-        .pco-price-old {
-            color: #86868b;
-            text-decoration: line-through;
-            font-size: 16px;
-            opacity: 0.7;
-        }
-        .pco-price {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--accent-light);
-            line-height: 1.1;
-            margin: 6px 0;
-        }
-        .pco-price small {
-            font-size: 16px;
-            font-weight: 400;
-            color: var(--text-dim);
-        }
-        .pco-installment {
-            font-size: 13px;
-            color: var(--text-dim);
-            margin-top: 4px;
-        }
-        .pco-items {
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border);
-        }
-        .pco-items-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-dim);
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-        .pco-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            font-size: 14px;
-            color: var(--text);
-        }
-        .pco-item-icon {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: rgba(99,102,241,0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 11px;
-            color: var(--accent-light);
-        }
-        .pco-methods {
-            padding: 1.2rem 2rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-        }
-        .pco-method {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: rgba(255,255,255,0.02);
-            color: var(--text-dim);
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .pco-method-icon {
-            font-size: 16px;
-        }
-        .pco-cta {
-            padding: 1.5rem 2rem 2rem;
-            text-align: center;
-        }
-        .pco-btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            color: #fff;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-            text-decoration: none;
-            text-align: center;
-        }
-        .pco-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px var(--accent-glow);
-        }
-        .pco-guarantee {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 14px;
-            font-size: 12px;
-            color: var(--text-dim);
-        }
-        .pco-guarantee-icon {
-            font-size: 16px;
-        }
-        .pco-secure {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 10px;
-            font-size: 11px;
-            color: #52525b;
-        }
-        .pco-countdown {
-            padding: 10px 2rem;
-            text-align: center;
-            background: rgba(99,102,241,0.04);
-            font-size: 13px;
-            color: var(--accent-light);
-            font-weight: 500;
-        }
-        @media (max-width: 640px) {
-            .pco-methods { flex-wrap: wrap; gap: 8px; }
-            .pco-method { flex: 1; min-width: 90px; justify-content: center; }
-            .pco-price { font-size: 2.5rem; }
-        }
+        /* PRE-CHECKOUT */
+        .pre-checkout { padding: 5rem 2rem; background: var(--bg); border-top: 1px solid var(--border); }
+        .pre-checkout-container { max-width: 580px; margin: 0 auto; }
+        .pre-checkout-box { background: linear-gradient(160deg, rgba(99,102,241,0.06), rgba(0,0,0,0.9)); border: 1px solid rgba(99,102,241,0.25); border-radius: 16px; overflow: hidden; position: relative; }
+        .pre-checkout-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent)); }
+        .pco-header { padding: 2rem 2rem 1.2rem; text-align: center; border-bottom: 1px solid var(--border); }
+        .pco-badge { display: inline-block; background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #000; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; }
+        .pco-header h2 { font-size: clamp(22px, 3vw, 28px); font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .pco-header p { color: var(--text-dim); font-size: 14px; }
+        .pco-price-area { padding: 1.5rem 2rem; text-align: center; border-bottom: 1px solid var(--border); }
+        .pco-price-old { color: #86868b; text-decoration: line-through; font-size: 16px; opacity: 0.7; }
+        .pco-price { font-size: 3rem; font-weight: 800; color: var(--accent-light); line-height: 1.1; margin: 6px 0; }
+        .pco-price small { font-size: 16px; font-weight: 400; color: var(--text-dim); }
+        .pco-installment { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+        .pco-items { padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); }
+        .pco-items-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 12px; font-weight: 600; }
+        .pco-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; color: var(--text); }
+        .pco-item-icon { width: 22px; height: 22px; border-radius: 50%; background: rgba(99,102,241,0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; color: var(--accent-light); }
+        .pco-methods { padding: 1.2rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: center; gap: 16px; }
+        .pco-method { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1px solid var(--border); border-radius: 8px; background: rgba(255,255,255,0.02); color: var(--text-dim); font-size: 12px; font-weight: 500; }
+        .pco-method-icon { font-size: 16px; }
+        .pco-cta { padding: 1.5rem 2rem 2rem; text-align: center; }
+        .pco-btn { display: block; width: 100%; padding: 16px; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.5px; text-decoration: none; text-align: center; }
+        .pco-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px var(--accent-glow); }
+        .pco-guarantee { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; font-size: 12px; color: var(--text-dim); }
+        .pco-secure { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px; font-size: 11px; color: #52525b; }
+        .pco-countdown { padding: 10px 2rem; text-align: center; background: rgba(99,102,241,0.04); font-size: 13px; color: var(--accent-light); font-weight: 500; }
+        @media (max-width: 640px) { .pco-methods { flex-wrap: wrap; gap: 8px; } .pco-method { flex: 1; min-width: 90px; justify-content: center; } .pco-price { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
@@ -1443,23 +1278,17 @@
                 <p style="color:var(--text-dim);margin-top:6px">Acesso completo · Pagamento único · Garantia de 7 dias</p>
             </div>
             <div class="pre-checkout-box">
-                <!-- Top countdown bar -->
-                <div class="pco-countdown">
-                    Preço de lançamento encerra em <strong><span id="timer-pro">48</span>h</strong>
-                </div>
-                <!-- Header -->
+                <div class="pco-countdown">Preço de lançamento encerra em <strong><span id="timer-pro">48</span>h</strong></div>
                 <div class="pco-header">
                     <div class="pco-badge">Oferta de Lançamento</div>
                     <h2>Fábrica de Infoprodutos com IA</h2>
                     <p>Acesso vitalício · Atualizações incluídas</p>
                 </div>
-                <!-- Price -->
                 <div class="pco-price-area">
                     <span class="pco-price-old">R$ 197</span>
                     <div class="pco-price">R$ 47 <small>uma vez</small></div>
                     <div class="pco-installment">ou 6x de R$ 8,72 sem juros</div>
                 </div>
-                <!-- What's included -->
                 <div class="pco-items">
                     <div class="pco-items-title">O que você recebe</div>
                     <div class="pco-item"><span class="pco-item-icon">✓</span> 9 módulos + 37 aulas passo a passo</div>
@@ -1469,24 +1298,15 @@
                     <div class="pco-item"><span class="pco-item-icon">✓</span> Ebook "Modo Fábrica" com 12 prompts</div>
                     <div class="pco-item"><span class="pco-item-icon">✓</span> Acesso vitalício + atualizações futuras</div>
                 </div>
-                <!-- Payment methods -->
                 <div class="pco-methods">
                     <div class="pco-method"><span class="pco-method-icon">💳</span> Cartão</div>
                     <div class="pco-method"><span class="pco-method-icon">⚡</span> PIX</div>
                     <div class="pco-method"><span class="pco-method-icon">📄</span> Boleto</div>
                 </div>
-                <!-- CTA -->
                 <div class="pco-cta">
                     <a href="https://pay.kiwify.com.br/dBGEodq" class="pco-btn">QUERO COMEÇAR AGORA →</a>
-                    <div class="pco-guarantee">
-                        <span class="pco-guarantee-icon">🛡️</span>
-                        Garantia incondicional de 7 dias — não gostou, devolvemos tudo
-                    </div>
-                    <div class="pco-secure">
-                        <span>🔒 Pagamento seguro</span>
-                        <span>·</span>
-                        <span>Processado via Kiwify</span>
-                    </div>
+                    <div class="pco-guarantee"><span>🛡️</span> Garantia incondicional de 7 dias — não gostou, devolvemos tudo</div>
+                    <div class="pco-secure"><span>🔒 Pagamento seguro</span><span>·</span><span>Processado via Kiwify</span></div>
                 </div>
             </div>
         </div>
@@ -1499,7 +1319,7 @@
         <div class="cta-content">
             <h2>Pronto Para Transformar Suas Ideias em Lucro?</h2>
             <p>Junte-se a mais de 500 empreendedores que já estão ganhando com infoprodutos. Seu conhecimento vale ouro — deixe a Fábrica monetizá-lo.</p>
-            <button class="btn btn-primary" onclick="window.location.href='https://pay.kiwify.com.br/dBGEodq'" style="width: auto;">Garantir Minha Vaga por R$ 47 →</button>
+            <button class="btn btn-primary" onclick="window.location.href='https://pay.kiwify.com.br/dBGEodq'" style="width: auto;">Comprar Agora com Desconto</button>
         </div>
     </section>
 
@@ -1599,4 +1419,310 @@
         const mainNav = document.getElementById('mainNav');
 
         menuToggle.addEventListener('click', () => {
-            mainNav.clas
+            mainNav.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        mainNav.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                mainNav.classList.remove('active');
+            }
+        });
+
+        // ========================
+        // 2. HERO ANIMATIONS
+        // ========================
+        const heroTimeline = gsap.timeline();
+
+        // Animate hero badge
+        heroTimeline.from('.hero-badge', {
+            opacity: 0,
+            y: -20,
+            duration: 0.6,
+            ease: 'power2.out'
+        });
+
+        // Animate hero heading
+        heroTimeline.from('.hero h1', {
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+            ease: 'power2.out'
+        }, '-=0.3');
+
+        // Animate hero description
+        heroTimeline.from('.hero p', {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '-=0.4');
+
+        // Animate buttons
+        heroTimeline.from('.hero-buttons', {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '-=0.3');
+
+        // Animate meta
+        heroTimeline.from('.hero-meta', {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+            ease: 'power2.out'
+        }, '-=0.3');
+
+        // ========================
+        // 3. SCROLL ANIMATIONS WITH FALLBACK
+        // ========================
+        const animateOnScroll = () => {
+            // Benefit cards
+            ScrollTrigger.batch('.benefit-card', {
+                onEnter: (batch) => {
+                    gsap.to(batch, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power2.out'
+                    });
+                },
+                start: 'top 80%',
+                markers: false
+            });
+
+            // Feature sections
+            ScrollTrigger.batch('.features-grid', {
+                onEnter: (batch) => {
+                    gsap.to(batch, {
+                        opacity: 1,
+                        x: 0,
+                        duration: 0.8,
+                        ease: 'power2.out'
+                    });
+                },
+                start: 'top 80%',
+                markers: false
+            });
+
+            // Pricing cards
+            ScrollTrigger.batch('.pricing-card', {
+                onEnter: (batch) => {
+                    gsap.to(batch, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power2.out',
+                        stagger: 0.1
+                    });
+                },
+                start: 'top 80%',
+                markers: false
+            });
+
+            // Testimonials (handled by Swiper)
+            ScrollTrigger.batch('.testimonial-card', {
+                onEnter: (batch) => {
+                    gsap.to(batch, {
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: 'power2.out'
+                    });
+                },
+                start: 'top 80%',
+                markers: false
+            });
+        };
+
+        // Set initial states for scroll animations
+        gsap.set(['.benefit-card', '.pricing-card', '.features-grid'], {
+            opacity: 0,
+            y: 30
+        });
+
+        gsap.set('.features-grid:nth-child(even)', {
+            x: 30
+        });
+
+        gsap.set('.features-grid:nth-child(odd)', {
+            x: -30
+        });
+
+        // Initialize scroll animations
+        if (window.innerWidth > 1024) {
+            animateOnScroll();
+        } else {
+            // Fallback: Simple fade-in for mobile after 2.5s
+            gsap.to(['.benefit-card', '.pricing-card', '.features-grid'], {
+                opacity: 1,
+                y: 0,
+                x: 0,
+                delay: 2.5,
+                duration: 0.5,
+                ease: 'power2.out'
+            });
+        }
+
+        // ========================
+        // 4. SWIPER INITIALIZATION
+        // ========================
+        const swiper = new Swiper('.swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: true
+            },
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2
+                },
+                1024: {
+                    slidesPerView: 3
+                }
+            }
+        });
+
+        // ========================
+        // 5. COUNTDOWN TIMER
+        // ========================
+        const startCountdown = (elementId, hours) => {
+            let timeLeft = hours * 3600;
+
+            const updateTimer = () => {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+
+                const h = Math.floor(timeLeft / 3600);
+                const m = Math.floor((timeLeft % 3600) / 60);
+                const s = timeLeft % 60;
+
+                element.textContent = `${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+
+                if (timeLeft <= 0) {
+                    element.textContent = 'Oferta Expirada';
+                    clearInterval(countdownInterval);
+                } else {
+                    timeLeft--;
+                }
+            };
+
+            updateTimer();
+            const countdownInterval = setInterval(updateTimer, 1000);
+        };
+
+        // Start countdown for Professional plan (48 hours)
+        startCountdown('timer-pro', 48);
+
+        // ========================
+        // 6. FAQ ACCORDION
+        // ========================
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach((item) => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                // Close other open items
+                faqItems.forEach((other) => {
+                    if (other !== item) {
+                        other.classList.remove('active');
+                    }
+                });
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+
+        // ========================
+        // 7. SMOOTH SCROLL BEHAVIOR
+        // ========================
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ========================
+        // 8. BUTTON RIPPLE EFFECT
+        // ========================
+        document.querySelectorAll('.btn, .nav-btn').forEach((btn) => {
+            btn.addEventListener('click', function (e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.position = 'absolute';
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+
+                this.appendChild(ripple);
+
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Ripple animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ========================
+        // 9. SCROLL TO TOP ON PAGE LOAD
+        // ========================
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+
+        // ========================
+        // 10. REFRESH SCROLL TRIGGER ON RESIZE
+        // ========================
+        window.addEventListener('resize', () => {
+            ScrollTrigger.refresh();
+        });
+
+        // ========================
+        // 11. PAGE LOAD ANIMATION
+        // ========================
+        gsap.from('body', {
+            opacity: 0,
+            duration: 0.5,
+            ease: 'power2.out'
+        });
+
+        // ========================
+        // 12. PREVENT DOUBLE SCROLL ON LOAD
+        // ========================
+        window.addEventListener('load', () => {
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+</html>
