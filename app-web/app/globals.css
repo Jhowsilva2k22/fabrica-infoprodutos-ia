@@ -199,6 +199,18 @@ body {
   flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
+/* ── SIDEBAR EBOOK ── */
+.sidebar-ebook {
+  padding: 8px 20px; flex-shrink: 0;
+}
+.sidebar-ebook-link {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; color: #818cf8; text-decoration: none;
+  padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid #6366f133;
+  background: #6366f10d; transition: all 0.2s ease;
+}
+.sidebar-ebook-link:hover { background: #6366f11a; color: #6366f1; border-color: #6366f155; }
+
 /* ── SIDEBAR FOOTER ── */
 .sidebar-footer {
   padding: 12px 20px; border-top: 1px solid var(--border); flex-shrink: 0;

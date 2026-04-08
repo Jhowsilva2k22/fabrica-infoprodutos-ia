@@ -155,6 +155,17 @@ export default function Sidebar() {
           })}
         </div>
 
+        {/* Ebook Download */}
+        <div className="sidebar-ebook">
+          <a
+            href="/ebook-modo-fabrica.pdf"
+            download="MODO-FABRICA-Guia-Rapido.pdf"
+            className="sidebar-ebook-link"
+          >
+            📘 Baixar Ebook — Modo Fábrica
+          </a>
+        </div>
+
         {/* Footer */}
         <div className="sidebar-footer">
           <Link href="/" onClick={closeSidebar} className="sidebar-home-link">
