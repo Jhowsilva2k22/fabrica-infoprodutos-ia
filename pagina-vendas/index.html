@@ -859,6 +859,71 @@
                 transform: scale(1);
             }
         }
+
+        /* ========================
+           FEATURE MOCKUPS
+           ======================== */
+        .mockup-window {
+            background: #0a0a12;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            width: 100%;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .mockup-titlebar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .mockup-dot.red { background: #ff5f57; }
+        .mockup-dot.yellow { background: #febc2e; }
+        .mockup-dot.green { background: #28c840; }
+        .mockup-title {
+            margin-left: 8px;
+            font-size: 11px;
+            color: #86868b;
+            font-family: Inter, sans-serif;
+        }
+        .mockup-body { padding: 16px; font-size: 12px; line-height: 1.7; }
+        .mockup-line { display: flex; gap: 8px; margin-bottom: 2px; }
+        .mockup-prompt { color: #6366f1; }
+        .mockup-cmd { color: #f5f5f7; }
+        .mockup-comment { color: #4a4a5a; }
+        .mockup-success { color: #22c55e; }
+        .mockup-output { color: #86868b; }
+        .mockup-highlight { color: #818cf8; }
+        .mockup-file { padding: 6px 10px; background: rgba(99,102,241,0.08); border-radius: 6px; margin: 4px 0; border-left: 2px solid #6366f1; color: #a1a1aa; font-size: 11px; }
+
+        /* Kiwify checkout mockup */
+        .mockup-checkout { padding: 20px; }
+        .mockup-checkout-header { text-align: center; margin-bottom: 16px; }
+        .mockup-checkout-header h4 { color: #f5f5f7; font-size: 14px; margin-bottom: 4px; font-family: Inter, sans-serif; }
+        .mockup-checkout-header .mockup-price { font-size: 28px; font-weight: 800; color: #22c55e; font-family: Inter, sans-serif; }
+        .mockup-checkout-header .mockup-price-old { color: #ff3b3b; text-decoration: line-through; font-size: 14px; margin-right: 8px; font-family: Inter, sans-serif; }
+        .mockup-pay-options { display: flex; gap: 8px; margin-bottom: 16px; }
+        .mockup-pay-btn { flex: 1; padding: 10px; border-radius: 8px; text-align: center; font-size: 12px; font-family: Inter, sans-serif; border: 1px solid rgba(255,255,255,0.1); cursor: default; }
+        .mockup-pay-btn.active { background: rgba(99,102,241,0.15); border-color: #6366f1; color: #818cf8; }
+        .mockup-pay-btn:not(.active) { background: rgba(255,255,255,0.03); color: #86868b; }
+        .mockup-input { width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: #86868b; font-size: 12px; margin-bottom: 8px; box-sizing: border-box; font-family: Inter, sans-serif; }
+        .mockup-cta-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #6366f1, #818cf8); border: none; border-radius: 8px; color: white; font-weight: 700; font-size: 14px; margin-top: 12px; text-align: center; font-family: Inter, sans-serif; }
+        .mockup-secure { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; color: #4a4a5a; font-size: 10px; font-family: Inter, sans-serif; }
+
+        /* Dashboard mockup */
+        .mockup-dashboard { padding: 16px; }
+        .mockup-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+        .mockup-stat { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px; }
+        .mockup-stat-label { font-size: 10px; color: #86868b; font-family: Inter, sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+        .mockup-stat-value { font-size: 18px; font-weight: 800; color: #f5f5f7; margin-top: 2px; font-family: Inter, sans-serif; }
+        .mockup-stat-change { font-size: 10px; color: #22c55e; font-family: Inter, sans-serif; }
+        .mockup-chart { position: relative; height: 120px; background: rgba(255,255,255,0.02); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
+        .mockup-chart svg { width: 100%; height: 100%; }
+        .mockup-chart-label { position: absolute; top: 8px; left: 12px; font-size: 11px; color: #86868b; font-family: Inter, sans-serif; }
     </style>
 </head>
 <body>
@@ -972,11 +1037,65 @@
                         <li>Publicador em múltiplos canais</li>
                     </ul>
                 </div>
-                <div class="features-image">Sistema de Produção</div>
+                <div class="features-image">
+                    <div class="mockup-window">
+                        <div class="mockup-titlebar">
+                            <div class="mockup-dot red"></div>
+                            <div class="mockup-dot yellow"></div>
+                            <div class="mockup-dot green"></div>
+                            <span class="mockup-title">claude — fabrica-infoprodutos-ia</span>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="mockup-line"><span class="mockup-prompt">❯</span> <span class="mockup-cmd">claude "Crie o módulo 3 completo"</span></div>
+                            <div class="mockup-line"><span class="mockup-output">⠋ Analisando estrutura do curso...</span></div>
+                            <div class="mockup-line"><span class="mockup-success">✓</span> <span class="mockup-output">5 aulas geradas com conteúdo completo</span></div>
+                            <div class="mockup-line"><span class="mockup-success">✓</span> <span class="mockup-output">Markdown formatado e revisado</span></div>
+                            <div class="mockup-line"><span class="mockup-success">✓</span> <span class="mockup-output">Exemplos práticos inseridos</span></div>
+                            <div class="mockup-file">📁 curso/modulo-3/aula-1.md — 2.4KB</div>
+                            <div class="mockup-file">📁 curso/modulo-3/aula-2.md — 3.1KB</div>
+                            <div class="mockup-file">📁 curso/modulo-3/aula-3.md — 2.8KB</div>
+                            <div class="mockup-file">📁 curso/modulo-3/aula-4.md — 2.2KB</div>
+                            <div class="mockup-file">📁 curso/modulo-3/aula-5.md — 3.5KB</div>
+                            <div class="mockup-line" style="margin-top:8px"><span class="mockup-success">✓</span> <span class="mockup-highlight">Módulo 3 completo em 47 segundos</span></div>
+                            <div class="mockup-line"><span class="mockup-prompt">❯</span> <span class="mockup-comment">█</span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="features-grid">
-                <div class="features-image">Integração Kiwify</div>
+                <div class="features-image">
+                    <div class="mockup-window">
+                        <div class="mockup-titlebar">
+                            <div class="mockup-dot red"></div>
+                            <div class="mockup-dot yellow"></div>
+                            <div class="mockup-dot green"></div>
+                            <span class="mockup-title">checkout — kiwify.com.br</span>
+                        </div>
+                        <div class="mockup-checkout">
+                            <div class="mockup-checkout-header">
+                                <h4>Fábrica de Infoprodutos com IA</h4>
+                                <div><span class="mockup-price-old">R$ 197</span> <span class="mockup-price">R$ 47</span></div>
+                                <div style="font-size:11px;color:#86868b;margin-top:4px;font-family:Inter,sans-serif">ou 6x de R$ 8,72</div>
+                            </div>
+                            <div class="mockup-pay-options">
+                                <div class="mockup-pay-btn active">💳 Cartão</div>
+                                <div class="mockup-pay-btn">⚡ PIX</div>
+                                <div class="mockup-pay-btn">📄 Boleto</div>
+                            </div>
+                            <div class="mockup-input">Nome completo</div>
+                            <div class="mockup-input">E-mail</div>
+                            <div class="mockup-input">CPF</div>
+                            <div class="mockup-input">Número do cartão</div>
+                            <div style="display:flex;gap:8px">
+                                <div class="mockup-input" style="flex:1">Validade</div>
+                                <div class="mockup-input" style="flex:1">CVV</div>
+                            </div>
+                            <div class="mockup-cta-btn">🔐 Finalizar Compra — R$ 47</div>
+                            <div class="mockup-secure">🔐 Ambiente seguro · Dados criptografados · Garantia 7 dias</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="features-text">
                     <h3>Checkout e Pagamentos Integrados</h3>
                     <p>Venda seu produto direto pela Kiwify com zero taxa de setup. Receba em sua conta em até 7 dias úteis.</p>
@@ -1000,7 +1119,53 @@
                         <li>Community building e fidelização</li>
                     </ul>
                 </div>
-                <div class="features-image">Marketing e Crescimento</div>
+                <div class="features-image">
+                    <div class="mockup-window">
+                        <div class="mockup-titlebar">
+                            <div class="mockup-dot red"></div>
+                            <div class="mockup-dot yellow"></div>
+                            <div class="mockup-dot green"></div>
+                            <span class="mockup-title">dashboard — analytics</span>
+                        </div>
+                        <div class="mockup-dashboard">
+                            <div class="mockup-stats">
+                                <div class="mockup-stat">
+                                    <div class="mockup-stat-label">Visitantes</div>
+                                    <div class="mockup-stat-value">12.4K</div>
+                                    <div class="mockup-stat-change">▲ 34%</div>
+                                </div>
+                                <div class="mockup-stat">
+                                    <div class="mockup-stat-label">Conversão</div>
+                                    <div class="mockup-stat-value">4.2%</div>
+                                    <div class="mockup-stat-change">▲ 12%</div>
+                                </div>
+                                <div class="mockup-stat">
+                                    <div class="mockup-stat-label">Receita</div>
+                                    <div class="mockup-stat-value">R$ 8.7K</div>
+                                    <div class="mockup-stat-change">▲ 67%</div>
+                                </div>
+                            </div>
+                            <div class="mockup-chart">
+                                <div class="mockup-chart-label">Vendas — Últimos 30 dias</div>
+                                <svg viewBox="0 0 400 120" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#6366f1" stop-opacity="0.3"/>
+                                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M0,100 L30,90 L60,85 L90,70 L120,75 L150,55 L180,60 L210,40 L240,45 L270,30 L300,25 L330,15 L360,20 L400,5 L400,120 L0,120Z" fill="url(#chartGrad)"/>
+                                    <path d="M0,100 L30,90 L60,85 L90,70 L120,75 L150,55 L180,60 L210,40 L240,45 L270,30 L300,25 L330,15 L360,20 L400,5" fill="none" stroke="#6366f1" stroke-width="2"/>
+                                    <circle cx="400" cy="5" r="4" fill="#6366f1"/>
+                                </svg>
+                            </div>
+                            <div style="display:flex;gap:8px;margin-top:12px">
+                                <div class="mockup-file" style="flex:1;text-align:center;border-left:2px solid #22c55e">📧 Email: 42% abertura</div>
+                                <div class="mockup-file" style="flex:1;text-align:center;border-left:2px solid #6366f1">📱 Meta Ads: 2.1x ROAS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1080,54 +1245,32 @@
     <section id="pricing" class="pricing">
         <div class="pricing-container">
             <div class="section-header">
-                <h2>Escolha Seu Plano</h2>
-                <p>Invista uma vez, lucre para sempre</p>
+                <h2>Investimento Único</h2>
+                <p>Acesso completo por um preço de lançamento</p>
             </div>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Iniciante</h3>
-                    <div class="price">R$ 147<span> uma vez</span></div>
-                    <p class="pricing-description">Perfeito para quem está começando</p>
+            <div class="pricing-grid" style="display:flex;justify-content:center">
+                <div class="pricing-card featured" style="max-width:480px;width:100%">
+                    <div class="pricing-badge">Oferta de Lançamento</div>
+                    <h3>Acesso Completo</h3>
+                    <div style="margin:8px 0">
+                        <span style="color:#ff3b3b;text-decoration:line-through;font-size:18px;opacity:0.7">R$ 197</span>
+                    </div>
+                    <div class="price" style="color:#22c55e">R$ 47<span> uma vez</span></div>
+                    <p class="pricing-description">ou 6x de R$ 8,72 · Garantia de 7 dias</p>
                     <ul class="pricing-features">
-                        <li>Acesso aos 12 módulos</li>
-                        <li>Templates de prompts básicos</li>
-                        <li>Comunidade de alunos</li>
-                        <li>Email support</li>
+                        <li>9 módulos + 37 aulas passo a passo</li>
+                        <li>App Web completo incluso</li>
+                        <li>10 Skills do Claude Code prontas</li>
+                        <li>Templates de copy, emails e anúncios</li>
+                        <li>Ebook "Modo Fábrica" com 12 prompts</li>
+                        <li>Acesso vitalício + atualizações</li>
                     </ul>
-                    <button onclick="window.location.href='https://kiwify.com.br/checkout/fabrica-ia'">Começar Agora</button>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <div class="pricing-badge">Mais Popular</div>
-                    <h3>Profissional</h3>
-                    <div class="price">R$ 297<span> uma vez</span></div>
-                    <p class="pricing-description">Para quem quer escalar rápido</p>
-                    <ul class="pricing-features">
-                        <li>Tudo do Iniciante</li>
-                        <li>Prompts avançados + estratégias secretas</li>
-                        <li>Suporte por WhatsApp</li>
-                        <li>Mentoria em grupo (1x por semana)</li>
-                        <li>Grupo VIP exclusivo</li>
-                    </ul>
-                    <button onclick="window.location.href='https://kiwify.com.br/checkout/fabrica-ia'">Adquirir Profissional</button>
+                    <button onclick="window.location.href='https://pay.kiwify.com.br/dBGEodq'">QUERO COMEÇAR AGORA →</button>
                     <div class="countdown">
-                        <div class="countdown-label">Oferta por tempo limitado</div>
+                        <div class="countdown-label">Preço sobe em breve</div>
                         <div class="countdown-timer">⏱️ <span id="timer-pro">48</span> horas</div>
                     </div>
-                </div>
-                
-                <div class="pricing-card">
-                    <h3>Premium</h3>
-                    <div class="price">R$ 597<span> uma vez</span></div>
-                    <p class="pricing-description">Acesso total + suporte 1:1</p>
-                    <ul class="pricing-features">
-                        <li>Tudo do Profissional</li>
-                        <li>Suporte VIP 1:1 (15 sessões)</li>
-                        <li>Acesso antecipado a novos conteúdos</li>
-                        <li>Bônus: 5 templates prontos para usar</li>
-                        <li>Garantia de satisfação 30 dias</li>
-                    </ul>
-                    <button onclick="window.location.href='https://kiwify.com.br/checkout/fabrica-ia'">Adquirir Premium</button>
+                    <p style="text-align:center;font-size:12px;color:var(--text-dim);margin-top:12px">Pagamento seguro via Kiwify · Cartão, PIX ou Boleto</p>
                 </div>
             </div>
         </div>
