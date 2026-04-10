@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
+import { sendWelcomeEmail } from '@/lib/email'
 
 // Webhook da Kiwify - chamado quando uma compra é aprovada
 export async function POST(request: NextRequest) {
@@ -69,15 +70,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Database error' }, { status: 500 })
     }
 
-    // TODO: Enviar email de boas-vindas com senha temporária
-    // Por enquanto, logar no console pra debug
-    console.log(`✅ Novo aluno: ${customerEmail} | Senha: ${tempPassword}`)
+    // Enviar email de boas-vindas com credenciais
+    try {
+      await sendWelcomeEmail({
+        to: customerEmail,
+        name: customerName,
+        password: tempPassword,
+      })
+      console.log(`✅ Novo aluno: ${customerEmail} | Email enviado com sucesso`)
+    } catch (emailError) {
+      // Loga erro mas não falha o webhook — aluno já foi criado
+      console.error('Email send error:', emailError)
+    }
 
     return NextResponse.json({
       success: true,
-      message: 'Student created',
+      message: 'Student created and email sent',
       email: customerEmail,
-      tempPassword, // Remover em produção - só pra debug
     })
 
   } catch (error) {
