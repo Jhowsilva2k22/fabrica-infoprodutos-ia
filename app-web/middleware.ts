@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -12,62 +11,36 @@ export async function middleware(request: NextRequest) {
   }
 
   // Arquivos estáticos - não proteger
-  if (pathname.startsWith('/_next') || pathname.startsWith('/favicon') || pathname.includes('.')) {
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/favicon') ||
+    pathname.startsWith('/icon') ||
+    pathname.startsWith('/apple-icon') ||
+    pathname.endsWith('.pdf') ||
+    pathname.endsWith('.png') ||
+    pathname.endsWith('.ico')
+  ) {
     return NextResponse.next()
   }
 
-  // Verificar token de autenticação
+  // Verificar se tem variáveis do Supabase (dev mode = deixar passar)
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    // Se não tem Supabase configurado, deixar passar (dev mode)
+  if (!supabaseUrl) {
     return NextResponse.next()
   }
 
-  // Pegar token dos cookies
-  const accessToken = request.cookies.get('sb-access-token')?.value
-    || request.cookies.get(`sb-${new URL(supabaseUrl).hostname.split('.')[0]}-auth-token`)?.value
+  // Verificar cookie de autenticação
+  const authCookie = request.cookies.get('fabrica_auth')?.value
 
-  if (!accessToken) {
-    // Tentar pegar do cookie padrão do Supabase
-    const allCookies = request.cookies.getAll()
-    const supabaseCookie = allCookies.find(c => c.name.includes('auth-token'))
+  // Também checar cookies padrão do Supabase (sb-*-auth-token)
+  const allCookies = request.cookies.getAll()
+  const supabaseCookie = allCookies.find(c => c.name.includes('auth-token'))
 
-    if (!supabaseCookie) {
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
-  }
-
-  // Verificar se o token é válido
-  try {
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-      auth: { persistSession: false },
-    })
-
-    // Tentar recuperar a sessão
-    const cookieValue = request.cookies.getAll()
-      .find(c => c.name.includes('auth-token'))?.value
-
-    if (cookieValue) {
-      try {
-        const parsed = JSON.parse(cookieValue)
-        const token = parsed?.access_token || parsed?.[0]?.access_token
-        if (token) {
-          const { data: { user }, error } = await supabase.auth.getUser(token)
-          if (user && !error) {
-            return NextResponse.next()
-          }
-        }
-      } catch {
-        // Cookie inválido
-      }
-    }
-
-    return NextResponse.redirect(new URL('/login', request.url))
-  } catch {
+  if (!authCookie && !supabaseCookie) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
+
+  return NextResponse.next()
 }
 
 export const config = {

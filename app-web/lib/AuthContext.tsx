@@ -13,14 +13,14 @@ interface Student {
 interface AuthContextType {
   student: Student | null
   loading: boolean
-  login: (email: string, password: string) => Promise<{ error: string | null }>
+  login: (email: string, password: string) => Promise<{ error: string | null; session: any | null }>
   logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
   student: null,
   loading: true,
-  login: async () => ({ error: null }),
+  login: async () => ({ error: null, session: null }),
   logout: async () => {},
 })
 
@@ -69,14 +69,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function login(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) return { error: error.message }
-    return { error: null }
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) return { error: error.message, session: null }
+    return { error: null, session: data.session }
   }
 
   async function logout() {
     await supabase.auth.signOut()
     setStudent(null)
+    // Limpar cookie de auth
+    if (typeof document !== 'undefined') {
+      document.cookie = 'fabrica_auth=; path=/; max-age=0'
+    }
   }
 
   return (

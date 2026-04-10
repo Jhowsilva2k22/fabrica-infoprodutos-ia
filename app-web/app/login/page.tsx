@@ -17,12 +17,16 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
 
-    const { error } = await login(email, password)
+    const { error, session } = await login(email, password)
 
     if (error) {
       setError('Email ou senha incorretos. Verifique seus dados.')
       setLoading(false)
     } else {
+      // Setar cookie para o middleware conseguir verificar a sessão
+      if (session?.access_token) {
+        document.cookie = `fabrica_auth=${session.access_token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`
+      }
       router.push('/')
     }
   }
