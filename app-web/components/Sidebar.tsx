@@ -8,8 +8,8 @@ import { courseModules, getTotalLessons } from '@/lib/courseData';
 export default function Sidebar() {
   const pathname = usePathname();
 
-  // Não mostrar sidebar na página de login
-  if (pathname === '/login') return null;
+  // Não mostrar sidebar nas páginas de login/recuperação
+  if (pathname.startsWith('/login')) return null;
 
   // Parse current module/lesson from pathname
   const parts = pathname.split('/').filter(Boolean);
@@ -170,6 +170,9 @@ export default function Sidebar() {
         <div className="sidebar-footer">
           <Link href="/" onClick={closeSidebar} className="sidebar-home-link">
             🏠 Início — Dashboard
+          </Link>
+          <Link href="/configuracoes" onClick={closeSidebar} className="sidebar-home-link">
+            ⚙️ Configurações
           </Link>
         </div>
       </nav>
