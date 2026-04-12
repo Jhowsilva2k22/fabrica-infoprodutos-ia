@@ -16,7 +16,7 @@ export async function sendWelcomeEmail({
   const firstName = name.split(' ')[0] || 'aluno(a)'
 
   const { data, error } = await resend.emails.send({
-    from: 'Fábrica de Infoprodutos <onboarding@resend.dev>',
+    from: 'Fábrica de Infoprodutos <contato@envio.habithus.com>',
     to,
     subject: `${firstName}, seu acesso ao Modo Fábrica está pronto!`,
     html: buildWelcomeHTML({ firstName, email: to, password }),
